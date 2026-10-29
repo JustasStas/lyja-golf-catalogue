@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://data.lyjaapp.eu/golf/v1/schema/search-index.schema.json",
+  "title": "Lyja golf search index, v1 (gzipped JSON array)",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["id", "n", "c", "la", "lo", "h", "g"],
+    "additionalProperties": false,
+    "properties": {
+      "id": {"type": "string", "pattern": "^[nwr][0-9]+$"},
+      "n": {"type": ["string", "null"]},
+      "c": {"type": "string", "pattern": "^[A-Z]{2}$"},
+      "la": {"type": "number", "minimum": -90, "maximum": 90},
+      "lo": {"type": "number", "minimum": -180, "maximum": 180},
+      "h": {"enum": [0, 9, 18, 27, 36]},
+      "g": {"enum": [0, 1]}
+    }
+  }
+}

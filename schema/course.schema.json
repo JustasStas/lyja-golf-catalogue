@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://data.lyjaapp.eu/golf/v1/schema/course.schema.json",
+  "title": "Lyja golf course, v1",
+  "type": "object",
+  "required": ["id", "name", "names", "country", "centroid", "layouts", "osm_version_date", "attribution"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {"type": "string", "pattern": "^[nwr][0-9]+$"},
+    "name": {"type": ["string", "null"]},
+    "names": {"type": "object", "additionalProperties": {"type": "string"}},
+    "country": {"type": "string", "pattern": "^[A-Z]{2}$"},
+    "centroid": {"$ref": "#/$defs/latlon"},
+    "bbox": {"type": "array", "items": {"type": "number"}, "minItems": 4, "maxItems": 4},
+    "elevation_m": {"type": "integer"},
+    "website": {"type": "string"},
+    "layouts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "holes", "complete"],
+        "additionalProperties": false,
+        "properties": {
+          "name": {"type": "string"},
+          "complete": {"type": "boolean"},
+          "holes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["n", "tee", "green", "bearing_tee", "bearing_approach", "length_m"],
+              "additionalProperties": false,
+              "properties": {
+                "n": {"type": "integer", "minimum": 1, "maximum": 36},
+                "par": {"type": "integer", "minimum": 3, "maximum": 6},
+                "hcp": {"type": "integer"},
+                "tee": {"$ref": "#/$defs/latlon"},
+                "green": {"$ref": "#/$defs/latlon"},
+                "bearing_tee": {"type": "number", "minimum": 0, "exclusiveMaximum": 360},
+                "bearing_approach": {"type": "number", "minimum": 0, "exclusiveMaximum": 360},
+                "length_m": {"type": "integer", "minimum": 0}
+              }
+            }
+          }
+        }
+      }
+    },
+    "osm_version_date": {"type": "string", "format": "date"},
+    "attribution": {"type": "string"}
+  },
+  "$defs": {
+    "latlon": {
+      "type": "array",
+      "prefixItems": [{"type": "number", "minimum": -90, "maximum": 90}, {"type": "number", "minimum": -180, "maximum": 180}],
+      "minItems": 2, "maxItems": 2
+    }
+  }
+}

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="lyja-fixtures">
+<node id="11000" version="1" lat="54.6700000" lon="25.2600000"></node>
+<node id="11001" version="1" lat="54.6700000" lon="25.3000000"></node>
+<node id="11002" version="1" lat="54.7000000" lon="25.3000000"></node>
+<node id="11003" version="1" lat="54.7000000" lon="25.2600000"></node>
+<node id="11004" version="1" lat="54.6760000" lon="25.2680000"></node>
+<node id="11005" version="1" lat="54.6792339" lon="25.2680000"></node>
+<node id="11006" version="1" lat="54.6794339" lon="25.2680000"></node>
+<node id="11007" version="1" lat="54.6824728" lon="25.2699131"></node>
+<node id="11008" version="1" lat="54.6826728" lon="25.2699131"></node>
+<node id="11009" version="1" lat="54.6837050" lon="25.2714113"></node>
+<node id="11010" version="1" lat="54.6839050" lon="25.2714113"></node>
+<node id="11011" version="1" lat="54.6860610" lon="25.2778709"></node>
+<node id="11012" version="1" lat="54.6862610" lon="25.2778709"></node>
+<node id="11013" version="1" lat="54.6868225" lon="25.2833805"></node>
+<node id="11014" version="1" lat="54.6870225" lon="25.2833805"></node>
+<node id="11015" version="1" lat="54.6864610" lon="25.2888901"></node>
+<node id="11016" version="1" lat="54.6866610" lon="25.2888901"></node>
+<node id="11017" version="1" lat="54.6862118" lon="25.2902359"></node>
+<node id="11018" version="1" lat="54.6858047" lon="25.2905643"></node>
+<node id="11019" version="1" lat="54.6860047" lon="25.2905643"></node>
+<node id="11020" version="1" lat="54.6835274" lon="25.2941603"></node>
+<node id="11021" version="1" lat="54.6837274" lon="25.2941603"></node>
+<node id="11022" version="1" lat="54.6796756" lon="25.2967114"></node>
+<node id="11023" version="1" lat="54.6798756" lon="25.2967114"></node>
+<node id="11024" version="1" lat="54.6766416" lon="25.2967114"></node>
+<node id="11025" version="1" lat="54.6768416" lon="25.2967114"></node>
+<node id="11026" version="1" lat="54.6755754" lon="25.2959143"></node>
+<node id="11027" version="1" lat="54.6757754" lon="25.2959143"></node>
+<node id="11028" version="1" lat="54.6732981" lon="25.2923192"></node>
+<node id="11029" version="1" lat="54.6734981" lon="25.2923192"></node>
+<node id="11030" version="1" lat="54.6713422" lon="25.2858613"></node>
+<node id="11031" version="1" lat="54.6715422" lon="25.2858613"></node>
+<node id="11032" version="1" lat="54.6709806" lon="25.2803537"></node>
+<node id="11033" version="1" lat="54.6711806" lon="25.2803537"></node>
+<node id="11034" version="1" lat="54.6717422" lon="25.2748463"></node>
+<node id="11035" version="1" lat="54.6719422" lon="25.2748463"></node>
+<node id="11036" version="1" lat="54.6726159" lon="25.2728282"></node>
+<node id="11037" version="1" lat="54.6728159" lon="25.2728282"></node>
+<node id="11038" version="1" lat="54.6761190" lon="25.2680351"></node>
+<node id="11039" version="1" lat="54.6763190" lon="25.2680351"></node>
+<node id="11040" version="1" lat="54.6793579" lon="25.2661221"></node>
+<way id="10100" version="1"><nd ref="11004"/><nd ref="11005"/><tag k="golf" v="hole"/><tag k="ref" v="1"/><tag k="handicap" v="1"/><tag k="par" v="4"/></way>
+<way id="10101" version="1"><nd ref="11006"/><nd ref="11007"/><tag k="golf" v="hole"/><tag k="ref" v="2"/><tag k="handicap" v="2"/><tag k="par" v="4"/></way>
+<way id="10102" version="1"><nd ref="11008"/><nd ref="11009"/><tag k="golf" v="hole"/><tag k="ref" v="3"/><tag k="handicap" v="3"/><tag k="par" v="3"/></way>
+<way id="10103" version="1"><nd ref="11010"/><nd ref="11011"/><tag k="golf" v="hole"/><tag k="ref" v="4"/><tag k="handicap" v="4"/><tag k="par" v="5"/></way>
+<way id="10104" version="1"><nd ref="11012"/><nd ref="11013"/><tag k="golf" v="hole"/><tag k="ref" v="5"/><tag k="handicap" v="5"/></way>
+<way id="10105" version="1"><nd ref="11014"/><nd ref="11015"/><tag k="golf" v="hole"/><tag k="ref" v="6"/><tag k="handicap" v="6"/></way>
+<way id="10106" version="1"><nd ref="11016"/><nd ref="11017"/><nd ref="11018"/><tag k="golf" v="hole"/><tag k="ref" v="7"/><tag k="handicap" v="7"/><tag k="par" v="3"/></way>
+<way id="10107" version="1"><nd ref="11019"/><nd ref="11020"/><tag k="golf" v="hole"/><tag k="ref" v="8"/><tag k="handicap" v="8"/><tag k="par" v="4"/></way>
+<way id="10108" version="1"><nd ref="11021"/><nd ref="11022"/><tag k="golf" v="hole"/><tag k="ref" v="9"/><tag k="handicap" v="9"/><tag k="par" v="5"/></way>
+<way id="10109" version="1"><nd ref="11023"/><nd ref="11024"/><tag k="golf" v="hole"/><tag k="ref" v="10"/><tag k="handicap" v="10"/><tag k="par" v="4"/></way>
+<way id="10110" version="1"><nd ref="11025"/><nd ref="11026"/><tag k="golf" v="hole"/><tag k="ref" v="11"/><tag k="handicap" v="11"/><tag k="par" v="3"/></way>
+<way id="10111" version="1"><nd ref="11027"/><nd ref="11028"/><tag k="golf" v="hole"/><tag k="ref" v="12"/><tag k="handicap" v="12"/><tag k="par" v="4"/></way>
+<way id="10112" version="1"><nd ref="11029"/><nd ref="11030"/><tag k="golf" v="hole"/><tag k="ref" v="13"/><tag k="handicap" v="13"/><tag k="par" v="5"/></way>
+<way id="10113" version="1"><nd ref="11031"/><nd ref="11032"/><tag k="golf" v="hole"/><tag k="ref" v="14"/><tag k="handicap" v="14"/><tag k="par" v="4"/></way>
+<way id="10114" version="1"><nd ref="11033"/><nd ref="11034"/><tag k="golf" v="hole"/><tag k="ref" v="15"/><tag k="handicap" v="15"/><tag k="par" v="4"/></way>
+<way id="10115" version="1"><nd ref="11035"/><nd ref="11036"/><tag k="golf" v="hole"/><tag k="ref" v="16"/><tag k="handicap" v="16"/><tag k="par" v="3"/></way>
+<way id="10116" version="1"><nd ref="11037"/><nd ref="11038"/><tag k="golf" v="hole"/><tag k="ref" v="17"/><tag k="handicap" v="17"/><tag k="par" v="5"/></way>
+<way id="10117" version="1"><nd ref="11039"/><nd ref="11040"/><tag k="golf" v="hole"/><tag k="ref" v="18"/><tag k="handicap" v="18"/><tag k="par" v="4"/></way>
+<way id="123456" version="1"><nd ref="11000"/><nd ref="11001"/><nd ref="11002"/><nd ref="11003"/><nd ref="11000"/><tag k="leisure" v="golf_course"/><tag k="name" v="Vilkės golfo klubas"/><tag k="name:lt" v="Vilkės golfo klubas"/><tag k="name:en" v="Vilke Golf Club"/><tag k="ele" v="160"/><tag k="website" v="https://example.lt"/></way>
+</osm>

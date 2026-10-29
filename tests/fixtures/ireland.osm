@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="lyja-fixtures">
+<node id="51000" version="1" lat="54.5700000" lon="-5.9900000"></node>
+<node id="51001" version="1" lat="54.5700000" lon="-5.9600000"></node>
+<node id="51002" version="1" lat="54.5900000" lon="-5.9600000"></node>
+<node id="51003" version="1" lat="54.5900000" lon="-5.9900000"></node>
+<node id="51004" version="1" lat="53.3300000" lon="-6.2900000"></node>
+<node id="51005" version="1" lat="53.3300000" lon="-6.2600000"></node>
+<node id="51006" version="1" lat="53.3500000" lon="-6.2600000"></node>
+<node id="51007" version="1" lat="53.3500000" lon="-6.2900000"></node>
+<way id="500" version="1"><nd ref="51000"/><nd ref="51001"/><nd ref="51002"/><nd ref="51003"/><nd ref="51000"/><tag k="leisure" v="golf_course"/><tag k="name" v="Belfast Links"/></way>
+<way id="501" version="1"><nd ref="51004"/><nd ref="51005"/><nd ref="51006"/><nd ref="51007"/><nd ref="51004"/><tag k="leisure" v="golf_course"/><tag k="name" v="Dublin Links"/></way>
+</osm>

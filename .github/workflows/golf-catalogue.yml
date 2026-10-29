@@ -1,0 +1,142 @@
+# Builds the golf course catalogue from OpenStreetMap and publishes it to
+# Cloudflare R2 (served at https://data.lyjaapp.eu/golf/). See
+# README.md.
+#
+# Monthly, plus by hand. Each region is downloaded, filtered and reduced in a
+# job of its own (one big download at a time per runner, deleted at once);
+# one job then merges them, checks the result against the live build and
+# publishes, the manifest last. A failed download or a failed check publishes
+# nothing and the last good build stays live.
+name: Golf catalogue
+
+on:
+  schedule:
+    - cron: "0 3 1 * *"
+  workflow_dispatch:
+    inputs:
+      only:
+        description: "Regex on Geofabrik paths to build, e.g. 'lithuania|latvia'. Empty builds everything; a partial build is never published."
+        required: false
+        default: ""
+      publish:
+        description: "Publish to R2 (full builds only)"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: golf-catalogue
+  cancel-in-progress: false
+
+jobs:
+  plan:
+    runs-on: ubuntu-24.04
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+      started: ${{ steps.plan.outputs.started }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements.txt
+      - run: pip install -r requirements.txt
+      - run: python -m pytest -q
+      - id: plan
+        env:
+          ONLY: ${{ inputs.only }}
+        run: |
+          echo "matrix=$(python -m golf_catalogue.plan ${ONLY:+--only "$ONLY"})" >> "$GITHUB_OUTPUT"
+          echo "started=$(date +%s)" >> "$GITHUB_OUTPUT"
+
+  extract:
+    needs: plan
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    name: extract ${{ matrix.id }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements.txt
+      - name: Tools
+        run: |
+          sudo apt-get install -y -q osmium-tool >/dev/null
+          pip install -q "$(grep '^osmium==' requirements.txt)" "$(grep '^shapely==' requirements.txt)"
+      - name: Download ${{ matrix.url }}
+        env:
+          URL: ${{ matrix.url }}
+        run: |
+          curl -fsSL --retry 5 --retry-delay 30 -o region.osm.pbf "$URL"
+          curl -fsSL --retry 5 --retry-delay 30 -o region.md5 "$URL.md5"
+          echo "$(cut -d' ' -f1 region.md5)  region.osm.pbf" | md5sum -c -
+          ls -lh region.osm.pbf
+      - name: Filter
+        run: |
+          echo "TIMESTAMP=$(osmium fileinfo -g header.option.timestamp region.osm.pbf || true)" >> "$GITHUB_ENV"
+          osmium tags-filter region.osm.pbf nwr/leisure=golf_course nwr/golf r/type=sport -o golf.osm.pbf --overwrite
+          rm region.osm.pbf
+      - name: Extract
+        run: python -m golf_catalogue.extract golf.osm.pbf --region "${{ matrix.id }}" --country "${{ matrix.country }}" --timestamp "$TIMESTAMP" --out "raw/${{ matrix.id }}.json.gz"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: raw-${{ matrix.id }}
+          path: raw/
+          retention-days: 7
+
+  build:
+    needs: [plan, extract]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements.txt
+      - run: pip install -r requirements.txt
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: raw-*
+          merge-multiple: true
+          path: raw
+      - name: Build
+        run: python -m golf_catalogue.build raw out
+      - name: Check against the live build
+        run: |
+          curl -fsSL -o previous.json https://data.lyjaapp.eu/golf/v1/manifest.json || rm -f previous.json
+          python -m golf_catalogue.guard out/stats.json --previous previous.json
+      - name: Summary
+        if: always()
+        run: |
+          [ -f out/stats.json ] || exit 0
+          minutes=$(( ( $(date +%s) - ${{ needs.plan.outputs.started }} ) / 60 ))
+          python -m golf_catalogue.summary out --minutes "$minutes" >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: build-report
+          path: |
+            out/stats.json
+            out/build-log.json
+          retention-days: 90
+      - name: Publish to R2
+        if: inputs.only == '' && inputs.publish != false
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_BUCKET: ${{ vars.R2_BUCKET || 'lyja-golf' }}
+        run: |
+          tar -czf ../golf-catalogue.tar.gz --exclude='./raw' --exclude='./out' --exclude='__pycache__' --exclude='./.git' .
+          python -m golf_catalogue.publish out --tools ../golf-catalogue.tar.gz

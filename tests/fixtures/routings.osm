@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="lyja-fixtures">
+<node id="41000" version="1" lat="55.0000000" lon="24.0000000"></node>
+<node id="41001" version="1" lat="55.0000000" lon="24.1000000"></node>
+<node id="41002" version="1" lat="55.0800000" lon="24.1000000"></node>
+<node id="41003" version="1" lat="55.0800000" lon="24.0000000"></node>
+<node id="41004" version="1" lat="55.0050000" lon="24.0100000"></node>
+<node id="41005" version="1" lat="55.0082339" lon="24.0100000"></node>
+<node id="41006" version="1" lat="55.0084339" lon="24.0100000"></node>
+<node id="41007" version="1" lat="55.0109112" lon="24.0136249"></node>
+<node id="41008" version="1" lat="55.0111112" lon="24.0136249"></node>
+<node id="41009" version="1" lat="55.0113452" lon="24.0159391"></node>
+<node id="41010" version="1" lat="55.0115452" lon="24.0159391"></node>
+<node id="41011" version="1" lat="55.0093893" lon="24.0224514"></node>
+<node id="41012" version="1" lat="55.0095893" lon="24.0224514"></node>
+<node id="41013" version="1" lat="55.0065504" lon="24.0243802"></node>
+<node id="41014" version="1" lat="55.0067504" lon="24.0243802"></node>
+<node id="41015" version="1" lat="55.0037115" lon="24.0224515"></node>
+<node id="41016" version="1" lat="55.0039115" lon="24.0224515"></node>
+<node id="41017" version="1" lat="55.0032378" lon="24.0204168"></node>
+<node id="41018" version="1" lat="55.0034378" lon="24.0204168"></node>
+<node id="41019" version="1" lat="55.0039993" lon="24.0148638"></node>
+<node id="41020" version="1" lat="55.0041993" lon="24.0148638"></node>
+<node id="41021" version="1" lat="55.0075024" lon="24.0100311"></node>
+<node id="41022" version="1" lat="55.0400000" lon="24.0600000"></node>
+<node id="41023" version="1" lat="55.0432339" lon="24.0600000"></node>
+<node id="41024" version="1" lat="55.0434339" lon="24.0600000"></node>
+<node id="41025" version="1" lat="55.0459112" lon="24.0636281"></node>
+<node id="41026" version="1" lat="55.0461112" lon="24.0636281"></node>
+<node id="41027" version="1" lat="55.0463452" lon="24.0659443"></node>
+<node id="41028" version="1" lat="55.0465452" lon="24.0659443"></node>
+<node id="41029" version="1" lat="55.0443893" lon="24.0724622"></node>
+<node id="41030" version="1" lat="55.0445893" lon="24.0724622"></node>
+<node id="41031" version="1" lat="55.0415504" lon="24.0743928"></node>
+<node id="41032" version="1" lat="55.0417504" lon="24.0743928"></node>
+<node id="41033" version="1" lat="55.0387115" lon="24.0724624"></node>
+<node id="41034" version="1" lat="55.0389115" lon="24.0724624"></node>
+<node id="41035" version="1" lat="55.0382378" lon="24.0704259"></node>
+<node id="41036" version="1" lat="55.0384378" lon="24.0704259"></node>
+<node id="41037" version="1" lat="55.0389993" lon="24.0648681"></node>
+<node id="41038" version="1" lat="55.0391993" lon="24.0648681"></node>
+<node id="41039" version="1" lat="55.0425024" lon="24.0600311"></node>
+<node id="41040" version="1" lat="56.0000000" lon="24.0000000"></node>
+<node id="41041" version="1" lat="56.0000000" lon="24.1000000"></node>
+<node id="41042" version="1" lat="56.0800000" lon="24.1000000"></node>
+<node id="41043" version="1" lat="56.0800000" lon="24.0000000"></node>
+<node id="41044" version="1" lat="56.0300000" lon="24.0100000"></node>
+<node id="41045" version="1" lat="56.0332339" lon="24.0100000"></node>
+<node id="41046" version="1" lat="56.0334339" lon="24.0100000"></node>
+<node id="41047" version="1" lat="56.0365807" lon="24.0113349"></node>
+<node id="41048" version="1" lat="56.0367807" lon="24.0113349"></node>
+<node id="41049" version="1" lat="56.0379848" lon="24.0124173"></node>
+<node id="41050" version="1" lat="56.0381848" lon="24.0124173"></node>
+<node id="41051" version="1" lat="56.0414879" lon="24.0173787"></node>
+<node id="41052" version="1" lat="56.0416879" lon="24.0173787"></node>
+<node id="41053" version="1" lat="56.0436191" lon="24.0220226"></node>
+<node id="41054" version="1" lat="56.0438191" lon="24.0220226"></node>
+<node id="41055" version="1" lat="56.0451000" lon="24.0273388"></node>
+<node id="41056" version="1" lat="56.0453000" lon="24.0273388"></node>
+<node id="41057" version="1" lat="56.0455340" lon="24.0297147"></node>
+<node id="41058" version="1" lat="56.0457340" lon="24.0297147"></node>
+<node id="41059" version="1" lat="56.0455459" lon="24.0354949"></node>
+<node id="41060" version="1" lat="56.0457459" lon="24.0354949"></node>
+<node id="41061" version="1" lat="56.0445093" lon="24.0428907"></node>
+<node id="41062" version="1" lat="56.0447093" lon="24.0428907"></node>
+<node id="41063" version="1" lat="56.0430923" lon="24.0479048"></node>
+<node id="41064" version="1" lat="56.0432923" lon="24.0479048"></node>
+<node id="41065" version="1" lat="56.0423676" lon="24.0496595"></node>
+<node id="41066" version="1" lat="56.0425676" lon="24.0496595"></node>
+<node id="41067" version="1" lat="56.0398657" lon="24.0528410"></node>
+<node id="41068" version="1" lat="56.0400657" lon="24.0528410"></node>
+<node id="41069" version="1" lat="56.0360138" lon="24.0554810"></node>
+<node id="41070" version="1" lat="56.0362138" lon="24.0554810"></node>
+<node id="41071" version="1" lat="56.0330018" lon="24.0561530"></node>
+<node id="41072" version="1" lat="56.0332018" lon="24.0561530"></node>
+<node id="41073" version="1" lat="56.0299897" lon="24.0554810"></node>
+<node id="41074" version="1" lat="56.0301897" lon="24.0554810"></node>
+<node id="41075" version="1" lat="56.0289235" lon="24.0546562"></node>
+<node id="41076" version="1" lat="56.0291235" lon="24.0546562"></node>
+<node id="41077" version="1" lat="56.0255210" lon="24.0504158"></node>
+<node id="41078" version="1" lat="56.0257210" lon="24.0504158"></node>
+<node id="41079" version="1" lat="56.0235017" lon="24.0462065"></node>
+<node id="41080" version="1" lat="56.0237017" lon="24.0462065"></node>
+<node id="41081" version="1" lat="56.0220848" lon="24.0411950"></node>
+<node id="41082" version="1" lat="56.0222848" lon="24.0411950"></node>
+<node id="41083" version="1" lat="56.0213573" lon="24.0356516"></node>
+<node id="41084" version="1" lat="56.0215573" lon="24.0356516"></node>
+<node id="41085" version="1" lat="56.0214789" lon="24.0332446"></node>
+<node id="41086" version="1" lat="56.0216789" lon="24.0332446"></node>
+<node id="41087" version="1" lat="56.0224277" lon="24.0256466"></node>
+<node id="41088" version="1" lat="56.0226277" lon="24.0256466"></node>
+<node id="41089" version="1" lat="56.0239086" lon="24.0203333"></node>
+<node id="41090" version="1" lat="56.0241086" lon="24.0203333"></node>
+<node id="41091" version="1" lat="56.0260397" lon="24.0156915"></node>
+<node id="41092" version="1" lat="56.0262397" lon="24.0156915"></node>
+<node id="41093" version="1" lat="56.0272720" lon="24.0141416"></node>
+<node id="41094" version="1" lat="56.0274720" lon="24.0141416"></node>
+<node id="41095" version="1" lat="56.0303619" lon="24.0115443"></node>
+<node id="41096" version="1" lat="56.0305619" lon="24.0115443"></node>
+<node id="41097" version="1" lat="56.0347576" lon="24.0097646"></node>
+<way id="400" version="1"><nd ref="41000"/><nd ref="41001"/><nd ref="41002"/><nd ref="41003"/><nd ref="41000"/><tag k="leisure" v="golf_course"/><tag k="name" v="Twin Links"/></way>
+<way id="401" version="1"><nd ref="41040"/><nd ref="41041"/><nd ref="41042"/><nd ref="41043"/><nd ref="41040"/><tag k="leisure" v="golf_course"/><tag k="name" v="Long Run"/></way>
+<way id="40100" version="1"><nd ref="41004"/><nd ref="41005"/><tag k="golf" v="hole"/><tag k="ref" v="1"/><tag k="par" v="4"/></way>
+<way id="40101" version="1"><nd ref="41006"/><nd ref="41007"/><tag k="golf" v="hole"/><tag k="ref" v="2"/><tag k="par" v="4"/></way>
+<way id="40102" version="1"><nd ref="41008"/><nd ref="41009"/><tag k="golf" v="hole"/><tag k="ref" v="3"/><tag k="par" v="9"/></way>
+<way id="40103" version="1"><nd ref="41010"/><nd ref="41011"/><tag k="golf" v="hole"/><tag k="ref" v="4"/><tag k="par" v="5"/></way>
+<way id="40104" version="1"><nd ref="41012"/><nd ref="41013"/><tag k="golf" v="hole"/><tag k="ref" v="5"/><tag k="par" v="4"/></way>
+<way id="40105" version="1"><nd ref="41014"/><nd ref="41015"/><tag k="golf" v="hole"/><tag k="ref" v="6"/><tag k="par" v="4"/></way>
+<way id="40106" version="1"><nd ref="41016"/><nd ref="41017"/><tag k="golf" v="hole"/><tag k="ref" v="7"/><tag k="par" v="3"/></way>
+<way id="40107" version="1"><nd ref="41018"/><nd ref="41019"/><tag k="golf" v="hole"/><tag k="ref" v="8"/><tag k="par" v="4"/></way>
+<way id="40108" version="1"><nd ref="41020"/><nd ref="41021"/><tag k="golf" v="hole"/><tag k="ref" v="9"/><tag k="par" v="5"/></way>
+<way id="40109" version="1"><nd ref="41022"/><nd ref="41023"/><tag k="golf" v="hole"/><tag k="ref" v="1"/><tag k="par" v="4"/></way>
+<way id="40110" version="1"><nd ref="41024"/><nd ref="41025"/><tag k="golf" v="hole"/><tag k="ref" v="2"/><tag k="par" v="4"/></way>
+<way id="40111" version="1"><nd ref="41026"/><nd ref="41027"/><tag k="golf" v="hole"/><tag k="ref" v="3"/><tag k="par" v="3"/></way>
+<way id="40112" version="1"><nd ref="41028"/><nd ref="41029"/><tag k="golf" v="hole"/><tag k="ref" v="4"/><tag k="par" v="5"/></way>
+<way id="40113" version="1"><nd ref="41030"/><nd ref="41031"/><tag k="golf" v="hole"/><tag k="ref" v="5"/><tag k="par" v="4"/></way>
+<way id="40114" version="1"><nd ref="41032"/><nd ref="41033"/><tag k="golf" v="hole"/><tag k="ref" v="6"/><tag k="par" v="4"/></way>
+<way id="40115" version="1"><nd ref="41034"/><nd ref="41035"/><tag k="golf" v="hole"/><tag k="ref" v="7"/><tag k="par" v="3"/></way>
+<way id="40116" version="1"><nd ref="41036"/><nd ref="41037"/><tag k="golf" v="hole"/><tag k="ref" v="8"/><tag k="par" v="4"/></way>
+<way id="40117" version="1"><nd ref="41038"/><nd ref="41039"/><tag k="golf" v="hole"/><tag k="ref" v="9"/><tag k="par" v="5"/></way>
+<way id="40118" version="1"><nd ref="41044"/><nd ref="41045"/><tag k="golf" v="hole"/><tag k="ref" v="1"/><tag k="par" v="4"/></way>
+<way id="40119" version="1"><nd ref="41046"/><nd ref="41047"/><tag k="golf" v="hole"/><tag k="ref" v="2"/><tag k="par" v="4"/></way>
+<way id="40120" version="1"><nd ref="41048"/><nd ref="41049"/><tag k="golf" v="hole"/><tag k="ref" v="3"/><tag k="par" v="3"/></way>
+<way id="40121" version="1"><nd ref="41050"/><nd ref="41051"/><tag k="golf" v="hole"/><tag k="ref" v="4"/><tag k="par" v="5"/></way>
+<way id="40122" version="1"><nd ref="41052"/><nd ref="41053"/><tag k="golf" v="hole"/><tag k="ref" v="5"/><tag k="par" v="4"/></way>
+<way id="40123" version="1"><nd ref="41054"/><nd ref="41055"/><tag k="golf" v="hole"/><tag k="ref" v="6"/><tag k="par" v="4"/></way>
+<way id="40124" version="1"><nd ref="41056"/><nd ref="41057"/><tag k="golf" v="hole"/><tag k="ref" v="7"/><tag k="par" v="3"/></way>
+<way id="40125" version="1"><nd ref="41058"/><nd ref="41059"/><tag k="golf" v="hole"/><tag k="ref" v="8"/><tag k="par" v="4"/></way>
+<way id="40126" version="1"><nd ref="41060"/><nd ref="41061"/><tag k="golf" v="hole"/><tag k="ref" v="9"/><tag k="par" v="5"/></way>
+<way id="40127" version="1"><nd ref="41062"/><nd ref="41063"/><tag k="golf" v="hole"/><tag k="ref" v="10"/><tag k="par" v="4"/></way>
+<way id="40128" version="1"><nd ref="41064"/><nd ref="41065"/><tag k="golf" v="hole"/><tag k="ref" v="11"/><tag k="par" v="3"/></way>
+<way id="40129" version="1"><nd ref="41066"/><nd ref="41067"/><tag k="golf" v="hole"/><tag k="ref" v="12"/><tag k="par" v="4"/></way>
+<way id="40130" version="1"><nd ref="41068"/><nd ref="41069"/><tag k="golf" v="hole"/><tag k="ref" v="13"/><tag k="par" v="5"/></way>
+<way id="40131" version="1"><nd ref="41070"/><nd ref="41071"/><tag k="golf" v="hole"/><tag k="ref" v="14"/><tag k="par" v="4"/></way>
+<way id="40132" version="1"><nd ref="41072"/><nd ref="41073"/><tag k="golf" v="hole"/><tag k="ref" v="15"/><tag k="par" v="4"/></way>
+<way id="40133" version="1"><nd ref="41074"/><nd ref="41075"/><tag k="golf" v="hole"/><tag k="ref" v="16"/><tag k="par" v="3"/></way>
+<way id="40134" version="1"><nd ref="41076"/><nd ref="41077"/><tag k="golf" v="hole"/><tag k="ref" v="17"/><tag k="par" v="5"/></way>
+<way id="40135" version="1"><nd ref="41078"/><nd ref="41079"/><tag k="golf" v="hole"/><tag k="ref" v="18"/><tag k="par" v="4"/></way>
+<way id="40136" version="1"><nd ref="41080"/><nd ref="41081"/><tag k="golf" v="hole"/><tag k="ref" v="19"/><tag k="par" v="4"/></way>
+<way id="40137" version="1"><nd ref="41082"/><nd ref="41083"/><tag k="golf" v="hole"/><tag k="ref" v="20"/><tag k="par" v="4"/></way>
+<way id="40138" version="1"><nd ref="41084"/><nd ref="41085"/><tag k="golf" v="hole"/><tag k="ref" v="21"/><tag k="par" v="3"/></way>
+<way id="40139" version="1"><nd ref="41086"/><nd ref="41087"/><tag k="golf" v="hole"/><tag k="ref" v="22"/><tag k="par" v="5"/></way>
+<way id="40140" version="1"><nd ref="41088"/><nd ref="41089"/><tag k="golf" v="hole"/><tag k="ref" v="23"/><tag k="par" v="4"/></way>
+<way id="40141" version="1"><nd ref="41090"/><nd ref="41091"/><tag k="golf" v="hole"/><tag k="ref" v="24"/><tag k="par" v="4"/></way>
+<way id="40142" version="1"><nd ref="41092"/><nd ref="41093"/><tag k="golf" v="hole"/><tag k="ref" v="25"/><tag k="par" v="3"/></way>
+<way id="40143" version="1"><nd ref="41094"/><nd ref="41095"/><tag k="golf" v="hole"/><tag k="ref" v="26"/><tag k="par" v="4"/></way>
+<way id="40144" version="1"><nd ref="41096"/><nd ref="41097"/><tag k="golf" v="hole"/><tag k="ref" v="27"/><tag k="par" v="5"/></way>
+</osm>

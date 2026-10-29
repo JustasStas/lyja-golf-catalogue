@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://data.lyjaapp.eu/golf/v1/schema/manifest.schema.json",
+  "title": "Lyja golf catalogue manifest, v1",
+  "type": "object",
+  "required": ["schema", "build_id", "generated_at", "base", "course_path", "country_path", "countries", "counts", "files", "license", "attribution"],
+  "properties": {
+    "schema": {"const": 1},
+    "build_id": {"type": "string"},
+    "generated_at": {"type": "string"},
+    "osm_version_date": {"type": ["string", "null"]},
+    "base": {"type": "string", "pattern": "^builds/.+/$"},
+    "course_path": {"const": "courses/{country}/{id}.json"},
+    "country_path": {"const": "countries/{country}.json.gz"},
+    "countries": {"type": "array", "items": {"type": "string", "pattern": "^[A-Z]{2}$"}},
+    "counts": {"type": "object", "required": ["totals", "countries"]},
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "sha256", "bytes"],
+        "properties": {"path": {"type": "string"}, "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "bytes": {"type": "integer"}}
+      }
+    },
+    "license": {"const": "ODbL-1.0"},
+    "attribution": {"type": "string"}
+  }
+}

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="lyja-fixtures">
+<node id="99" version="1" lat="54.6500000" lon="25.1500000"><tag k="leisure" v="golf_course"/><tag k="name" v="Node Golf"/></node>
+<node id="31000" version="1" lat="54.6000000" lon="25.1000000"></node>
+<node id="31001" version="1" lat="54.6000000" lon="25.1030000"></node>
+<node id="31002" version="1" lat="54.6020000" lon="25.1030000"></node>
+<node id="31003" version="1" lat="54.6020000" lon="25.1000000"></node>
+<node id="31004" version="1" lat="54.6100000" lon="25.1000000"></node>
+<node id="31005" version="1" lat="54.6100000" lon="25.1010000"></node>
+<node id="31006" version="1" lat="54.6110000" lon="25.1010000"></node>
+<node id="31007" version="1" lat="54.6110000" lon="25.1000000"></node>
+<node id="31008" version="1" lat="54.6200000" lon="25.1000000"></node>
+<node id="31009" version="1" lat="54.6200000" lon="25.1200000"></node>
+<node id="31010" version="1" lat="54.6300000" lon="25.1200000"></node>
+<node id="31011" version="1" lat="54.6300000" lon="25.1000000"></node>
+<node id="31012" version="1" lat="54.6400000" lon="25.1000000"></node>
+<node id="31013" version="1" lat="54.6400000" lon="25.1017000"></node>
+<node id="31014" version="1" lat="54.6409000" lon="25.1017000"></node>
+<node id="31015" version="1" lat="54.6409000" lon="25.1000000"></node>
+<way id="300" version="1"><nd ref="31000"/><nd ref="31001"/><nd ref="31002"/><nd ref="31003"/><nd ref="31000"/><tag k="leisure" v="golf_course"/><tag k="golf" v="driving_range"/><tag k="name" v="Range"/></way>
+<way id="301" version="1"><nd ref="31004"/><nd ref="31005"/><nd ref="31006"/><nd ref="31007"/><nd ref="31004"/><tag k="leisure" v="miniature_golf"/><tag k="name" v="Mini"/></way>
+<way id="302" version="1"><nd ref="31008"/><nd ref="31009"/><nd ref="31010"/><nd ref="31011"/><nd ref="31008"/><tag k="leisure" v="golf_course"/><tag k="sport" v="disc_golf"/><tag k="name" v="Disc"/></way>
+<way id="303" version="1"><nd ref="31012"/><nd ref="31013"/><nd ref="31014"/><nd ref="31015"/><nd ref="31012"/><tag k="leisure" v="golf_course"/><tag k="name" v="Pitch and putt"/></way>
+</osm>
