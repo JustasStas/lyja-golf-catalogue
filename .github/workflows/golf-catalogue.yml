@@ -77,15 +77,22 @@ jobs:
           URL: ${{ matrix.url }}
         run: |
           # Geofabrik republishes its extracts daily; while a region is being
-          # swapped the file or its checksum can 404 or mismatch for a few
-          # minutes. Checksum first, then the file, and the pair again after
-          # a pause if either fails.
+          # swapped the file can 404 for a few minutes, so a failed download
+          # is tried again after a pause. The checksum is checked where
+          # Geofabrik has one (Germany's .md5 404s); without it, osmium's
+          # read in the next step is what catches a broken file.
           for attempt in 1 2 3 4; do
-            if curl -fsSL --retry 5 --retry-delay 30 -o region.md5 "$URL.md5" \
-              && curl -fsSL --retry 5 --retry-delay 30 -o region.osm.pbf "$URL" \
-              && echo "$(cut -d' ' -f1 region.md5)  region.osm.pbf" | md5sum -c -; then
-              ls -lh region.osm.pbf
-              exit 0
+            if curl -fsSL --retry 5 --retry-delay 30 -o region.osm.pbf "$URL"; then
+              if curl -fsSL --retry 3 --retry-delay 10 -o region.md5 "$URL.md5"; then
+                if echo "$(cut -d' ' -f1 region.md5)  region.osm.pbf" | md5sum -c -; then
+                  ls -lh region.osm.pbf
+                  exit 0
+                fi
+              else
+                echo "::warning::No checksum for $URL; relying on osmium to read the file."
+                ls -lh region.osm.pbf
+                exit 0
+              fi
             fi
             echo "Attempt $attempt failed; waiting before the next."
             rm -f region.osm.pbf region.md5
