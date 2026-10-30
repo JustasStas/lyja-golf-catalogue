@@ -55,7 +55,7 @@ jobs:
   extract:
     needs: plan
     runs-on: ubuntu-24.04
-    timeout-minutes: 45
+    timeout-minutes: 90
     strategy:
       fail-fast: false
       max-parallel: 20
@@ -76,10 +76,22 @@ jobs:
         env:
           URL: ${{ matrix.url }}
         run: |
-          curl -fsSL --retry 5 --retry-delay 30 -o region.osm.pbf "$URL"
-          curl -fsSL --retry 5 --retry-delay 30 -o region.md5 "$URL.md5"
-          echo "$(cut -d' ' -f1 region.md5)  region.osm.pbf" | md5sum -c -
-          ls -lh region.osm.pbf
+          # Geofabrik republishes its extracts daily; while a region is being
+          # swapped the file or its checksum can 404 or mismatch for a few
+          # minutes. Checksum first, then the file, and the pair again after
+          # a pause if either fails.
+          for attempt in 1 2 3 4; do
+            if curl -fsSL --retry 5 --retry-delay 30 -o region.md5 "$URL.md5" \
+              && curl -fsSL --retry 5 --retry-delay 30 -o region.osm.pbf "$URL" \
+              && echo "$(cut -d' ' -f1 region.md5)  region.osm.pbf" | md5sum -c -; then
+              ls -lh region.osm.pbf
+              exit 0
+            fi
+            echo "Attempt $attempt failed; waiting before the next."
+            rm -f region.osm.pbf region.md5
+            sleep $((attempt * 300))
+          done
+          exit 1
       - name: Filter
         run: |
           echo "TIMESTAMP=$(osmium fileinfo -g header.option.timestamp region.osm.pbf || true)" >> "$GITHUB_ENV"
