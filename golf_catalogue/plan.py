@@ -21,12 +21,17 @@ def regions(only: str | None = None) -> list[dict]:
     out = []
     for entry in entries:
         path = entry["path"]
+        country = entry["country"]
+        # A bare NO in YAML is the boolean false (Norway came out as
+        # "FALSE"): every code must be a two-letter string.
+        if not (isinstance(country, str) and re.fullmatch(r"[A-Z]{2}", country)):
+            raise SystemExit(f"regions.yaml: {path}: country {country!r} is not a quoted ISO code")
         if only and not re.search(only, path):
             continue
         out.append({
             "id": path.replace("/", "-"),
             "url": f"{GEOFABRIK}{path}-latest.osm.pbf",
-            "country": str(entry["country"]).upper(),
+            "country": country,
         })
     ids = [r["id"] for r in out]
     if len(ids) != len(set(ids)):

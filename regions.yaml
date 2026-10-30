@@ -40,7 +40,7 @@ regions:
   - {path: europe/monaco, country: MC}
   - {path: europe/montenegro, country: ME}
   - {path: europe/netherlands, country: NL}
-  - {path: europe/norway, country: NO}
+  - {path: europe/norway, country: "NO"}  # quoted: YAML 1.1 reads a bare NO as false
   - {path: europe/poland, country: PL}
   - {path: europe/portugal, country: PT}
   - {path: europe/romania, country: RO}

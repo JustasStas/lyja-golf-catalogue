@@ -208,3 +208,11 @@ def test_area_of_a_hectare():
     side_lat = 100 / 111_195.0
     side_lon = 100 / (111_195.0 * __import__("math").cos(__import__("math").radians(lat)))
     assert geo.geometry_area_ha(box(25.0, lat, 25.0 + side_lon, lat + side_lat)) == pytest.approx(1.0, rel=0.01)
+
+
+def test_every_region_has_a_two_letter_country():
+    # Norway's NO once came out of YAML as False.
+    from golf_catalogue.plan import regions
+    countries = {r["country"] for r in regions()}
+    assert "NO" in countries
+    assert all(len(c) == 2 and c.isupper() for c in countries)
