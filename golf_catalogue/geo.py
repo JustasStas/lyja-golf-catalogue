@@ -73,3 +73,83 @@ def metres_to_degrees(metres: float, lat: float) -> float:
     lat_deg = metres / 111_320.0
     lon_deg = metres / (111_320.0 * max(math.cos(math.radians(lat)), 0.01))
     return max(lat_deg, lon_deg)
+
+
+# MARK: Outline
+
+# The published course outline (`outline` in course.schema.json): every
+# outer ring of the `leisure=golf_course` area, Douglas–Peucker simplified in
+# a local metric frame. The tolerance starts at OUTLINE_TOLERANCE_M and
+# doubles until the outline fits in OUTLINE_MAX_POINTS, so a big or detailed
+# course stays a few kilobytes. Inner rings (holes in the area) are dropped:
+# the outline is a drawing of where the course is, not its exact area.
+OUTLINE_TOLERANCE_M = 4.0
+OUTLINE_MAX_POINTS = 96  # all rings together, closing points not counted
+OUTLINE_MAX_RINGS = 8
+OUTLINE_MIN_RING_SHARE = 0.05  # an outer ring under 5 % of the largest is a sliver
+OUTLINE_DIGITS = 5  # ~1.1 m of latitude
+_M_PER_DEG = 111_320.0
+
+
+def outline(geom) -> list[list[list[float]]] | None:
+    """The simplified outer rings of a shapely (Multi)Polygon in lon/lat, as
+    `[[[lat, lon], ...], ...]`, largest ring first. Each ring is implicitly
+    closed (the first point is not repeated) and has at least three points.
+    None when nothing drawable is left."""
+    if geom is None or geom.is_empty:
+        return None
+    from shapely.geometry import Polygon
+
+    polygons = [g for g in getattr(geom, "geoms", [geom]) if g.geom_type == "Polygon" and not g.is_empty]
+    if not polygons:
+        return None
+    rings = sorted(((ring_area_m2(p.exterior.coords), list(p.exterior.coords)) for p in polygons), key=lambda r: -r[0])
+    largest = rings[0][0]
+    if largest <= 0:
+        return None
+    rings = [coords for area, coords in rings if area >= largest * OUTLINE_MIN_RING_SHARE][:OUTLINE_MAX_RINGS]
+
+    # A local equirectangular frame around the centre, in metres. Longitudes
+    # are unwrapped against the centre so a course on the antimeridian stays
+    # in one piece.
+    minx, miny, maxx, maxy = geom.bounds
+    lat0 = (miny + maxy) / 2
+    lon0 = rings[0][0][0]
+    kx = _M_PER_DEG * max(math.cos(math.radians(lat0)), 0.01)
+
+    def to_xy(lon: float, lat: float) -> tuple[float, float]:
+        return (((lon - lon0 + 180.0) % 360.0) - 180.0) * kx, (lat - lat0) * _M_PER_DEG
+
+    def to_latlon(x: float, y: float) -> list[float]:
+        lon = ((lon0 + x / kx + 180.0) % 360.0) - 180.0
+        return [round(lat0 + y / _M_PER_DEG, OUTLINE_DIGITS), round(lon, OUTLINE_DIGITS)]
+
+    projected = [Polygon([to_xy(lon, lat) for lon, lat in coords]) for coords in rings]
+    tolerance = OUTLINE_TOLERANCE_M
+    while True:
+        out = []
+        for poly in projected:
+            simple = poly.simplify(tolerance, preserve_topology=True)
+            if simple.is_empty or simple.geom_type != "Polygon":
+                continue
+            ring = []
+            for x, y in list(simple.exterior.coords)[:-1]:
+                point = to_latlon(x, y)
+                if not ring or ring[-1] != point:
+                    ring.append(point)
+            if len(ring) > 1 and ring[0] == ring[-1]:
+                ring.pop()
+            if len(ring) >= 3:
+                out.append(ring)
+        if sum(len(r) for r in out) <= OUTLINE_MAX_POINTS or tolerance > 5_000:
+            break
+        tolerance *= 2
+    # Rings still over the cap at a 5 km tolerance cannot happen for a real
+    # course; keep the largest rings that fit rather than publish a big file.
+    kept, total = [], 0
+    for ring in out:
+        if total + len(ring) > OUTLINE_MAX_POINTS:
+            break
+        kept.append(ring)
+        total += len(ring)
+    return kept or None

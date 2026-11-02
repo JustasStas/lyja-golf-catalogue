@@ -40,12 +40,22 @@ published).
 ```
 golf/v1/manifest.json                          build id, counts, base path, file hashes
 golf/v1/builds/{build}/search-index.json.gz    every course: id, name, country, centroid, holes, hole data flag
-golf/v1/builds/{build}/courses/{CC}/{id}.json  one course with its layouts and holes
+golf/v1/builds/{build}/courses/{CC}/{id}.json  one course with its outline, layouts and holes
 golf/v1/builds/{build}/countries/{CC}.json.gz  every course of a country
 golf/v1/builds/{build}/stats.json              per-country coverage
 golf/LICENSE.txt                               ODbL notice and attribution
 golf/tools/golf-catalogue.tar.gz               these scripts
 ```
+
+Each course file may carry an `outline`: the `leisure=golf_course` area's
+outer rings as `[[[lat, lon], …], …]`, largest first. A multipolygon keeps
+every outer ring of at least 5 % of the largest one (at most 8), so a course
+split by a road keeps both halves; inner rings are dropped. Each ring is
+Douglas–Peucker simplified in a local metric frame, starting at a 4 m
+tolerance and doubling until all rings together fit in 96 points, then
+rounded to 5 decimals (~1 m). Rings are implicitly closed (the first point
+is not repeated). A course mapped as a node has no outline. Adding the field
+is backward compatible: v1 readers that do not know it ignore it.
 
 Readers start from the manifest: `base` + `files[].path`, or `base` +
 `course_path` / `country_path` with `{country}` and `{id}` filled in. JSON
