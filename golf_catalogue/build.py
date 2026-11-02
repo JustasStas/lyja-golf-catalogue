@@ -356,6 +356,9 @@ def course_json(course: Course, layouts: list[Layout], osm_date: str) -> dict:
     if course.geom is not None:
         minx, miny, maxx, maxy = course.geom.bounds
         out["bbox"] = [round(miny, 5), round(minx, 5), round(maxy, 5), round(maxx, 5)]
+        rings = geo.outline(course.geom)
+        if rings:
+            out["outline"] = rings
     ele = tags.get("ele")
     try:
         if ele:

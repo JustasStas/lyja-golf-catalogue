@@ -131,6 +131,67 @@ def test_stats(tmp_path):
     assert stats["totals"]["courses"] == 4
 
 
+def test_outline_is_the_course_area(tmp_path):
+    courses, _ = run(tmp_path, ("single_18", "LT"), ("excluded", "LT"))
+    # The fixture's rectangle, implicitly closed, as [lat, lon].
+    assert courses["w123456"]["outline"] == [[[54.67, 25.26], [54.67, 25.3], [54.7, 25.3], [54.7, 25.26]]]
+    # A course mapped as a node has no outline.
+    assert "outline" not in courses["n99"]
+
+
+# MARK: Outline
+
+def _circle(lat: float, lon: float, radius_m: float, n: int):
+    import math
+    from shapely.geometry import Polygon
+    k = 111_320.0
+    return Polygon([
+        (lon + radius_m * math.cos(2 * math.pi * i / n) / (k * math.cos(math.radians(lat))),
+         lat + radius_m * math.sin(2 * math.pi * i / n) / k)
+        for i in range(n)
+    ])
+
+
+def test_outline_is_simplified_and_capped():
+    rings = geo.outline(_circle(54.68, 25.28, 600, 2000))
+    [ring] = rings
+    assert 3 <= len(ring) <= geo.OUTLINE_MAX_POINTS
+    assert ring[0] != ring[-1]  # implicitly closed
+    for lat, lon in ring:
+        assert lat == round(lat, 5) and lon == round(lon, 5)
+        # Still on the circle: simplification moves nothing far.
+        assert abs(geo.haversine_m(54.68, 25.28, lat, lon) - 600) < 40
+
+
+def test_outline_keeps_outer_rings_and_drops_slivers_and_holes():
+    from shapely.geometry import MultiPolygon, Polygon, box
+    big = box(25.00, 54.00, 25.02, 54.01)
+    half = box(25.03, 54.00, 25.045, 54.01)       # across a road: kept
+    sliver = box(25.05, 54.00, 25.0505, 54.0005)  # under 5 % of the largest: dropped
+    with_hole = Polygon(big.exterior.coords, [box(25.005, 54.002, 25.01, 54.005).exterior.coords])
+    rings = geo.outline(MultiPolygon([half, sliver, with_hole]))
+    assert len(rings) == 2
+    assert {round(p[1], 3) for p in rings[0]} == {25.0, 25.02}  # largest first, no inner ring
+    assert {round(p[1], 3) for p in rings[1]} == {25.03, 25.045}
+
+
+def test_outline_across_the_antimeridian():
+    from shapely.geometry import MultiPolygon, box
+    # Mapped as two halves either side of 180°, as OSM tools split it.
+    geom = MultiPolygon([box(179.995, -16.80, 180.0, -16.79), box(-180.0, -16.80, -179.995, -16.79)])
+    rings = geo.outline(geom)
+    assert len(rings) == 2
+    for ring in rings:
+        assert all(-180 <= lon <= 180 for _, lon in ring)
+        assert all(abs(abs(lon) - 180) < 0.01 for _, lon in ring)
+
+
+def test_outline_of_nothing():
+    assert geo.outline(None) is None
+    from shapely.geometry import Polygon
+    assert geo.outline(Polygon()) is None
+
+
 # MARK: Schemas
 
 def test_every_file_validates(tmp_path):
