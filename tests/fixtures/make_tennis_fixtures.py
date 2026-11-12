@@ -96,11 +96,13 @@ def seasonal() -> None:
 
 def backyard() -> None:
     """One unnamed private court in a residential area: hidden. A named one
-    beside it stays."""
+    and an unnamed public one beside it stay."""
     osm = Osm(17)
     osm.area(55.4000, 24.4000, 55.4050, 24.4100, {"landuse": "residential"}, id=170)
     court(osm, 55.4010, 24.4010, {**TENNIS, "access": "private"}, bearing=0)
     court(osm, 55.4040, 24.4090, {**TENNIS, "name": "Kiemo kortas"}, bearing=0)
+    # Unnamed and public in the same residential area: stays (owner, 2026-11-12).
+    court(osm, 55.4025, 24.4050, {**TENNIS, "access": "yes"}, bearing=0)
     osm.write("tennis_backyard.osm")
 
 

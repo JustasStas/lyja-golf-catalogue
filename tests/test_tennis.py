@@ -108,9 +108,9 @@ def test_seasonal_dome_is_kept_and_flagged(tmp_path):
 
 def test_backyard_court_is_hidden(tmp_path):
     venues, out = run(tmp_path, "backyard")
-    assert [v["name"] for v in venues.values()] == ["Kiemo kortas"]
+    assert sorted(v["name"] for v in venues.values()) == ["Kiemo kortas", "Tennis courts"]
     assert stats(out)["countries"]["LT"]["backyard_hidden"] == 1
-    assert len(index(out)) == 1
+    assert len(index(out)) == 2
 
 
 def test_a_street_between_courts_makes_two_venues(tmp_path):

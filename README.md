@@ -130,8 +130,10 @@ Then one job (`tennis_catalogue.build`) applies the rules:
   ground or park around the courts; otherwise courts within 40 m of each
   other (edge to edge) that no main road, residential street or waterway
   separates.
-- A single unnamed court that is private or in residential land, with no
-  club or sports centre around it, is a backyard court: counted, not listed.
+- A single unnamed court tagged `access=private`, with no club or sports
+  centre around it, is a backyard court: counted, not listed. Residential
+  land alone does not hide a court: public courts in apartment-block yards
+  stay.
 - Names: the venue feature's, the commonest court name, a named tennis place
   or club within 100 m, else generated ("Tennis courts, {park or street}",
   `name_generated` and `name_base` for the app to localise).

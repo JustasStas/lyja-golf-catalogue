@@ -23,8 +23,9 @@ The rules, in the brief's order (Part A, Extraction):
    ground or park around a pitch; otherwise pitches within 40 m of each
    other (DBSCAN, eps 40 m, min 1) that no main road, residential street or
    waterway separates.
-5. A single unnamed court, private or inside residential land, with no club
-   or sports centre around it, is a backyard court: counted, not indexed.
+5. A single unnamed court tagged `access=private`, with no club or sports
+   centre around it, is a backyard court: counted, not indexed. (Residential
+   land alone no longer hides a court: owner, 2026-11-12.)
 """
 
 from __future__ import annotations
@@ -466,8 +467,8 @@ def _country_stats(s: Counter) -> dict:
 
 
 def _is_backyard(venue: Venue, around) -> bool:
-    """Rule 5: one unnamed court, private or in residential land, and no club
-    or sports centre around it."""
+    """Rule 5: one unnamed private court, and no club or sports centre
+    around it."""
     if venue.container is not None and venue.container["kind"] in VENUE_CONTAINERS:
         return False
     if len(venue.pitches) != 1 or venue.pitches[0].courts != 1:
@@ -475,8 +476,10 @@ def _is_backyard(venue: Venue, around) -> bool:
     pitch = venue.pitches[0]
     if pitch.name or (venue.name and not venue.name_generated):
         return False
-    residential = any(c["kind"] == "residential" for c in around(pitch.inside))
-    return pitch.tags.get("access") == "private" or residential
+    # Only a court tagged private (owner, 2026-11-12): "inside residential
+    # land" also hid public courts in apartment-block yards, more than the
+    # venues kept in some countries.
+    return pitch.tags.get("access") == "private"
 
 
 def _name(venue, point_list, point_geoms, point_tree, barriers, barrier_names, barrier_kinds, barrier_tree, around) -> None:
