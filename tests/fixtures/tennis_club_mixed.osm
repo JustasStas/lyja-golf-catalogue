@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="lyja-fixtures">
+<node id="121000" version="1" lat="54.9000000" lon="23.9260000"></node>
+<node id="121001" version="1" lat="54.9000000" lon="23.9300000"></node>
+<node id="121002" version="1" lat="54.9020000" lon="23.9300000"></node>
+<node id="121003" version="1" lat="54.9020000" lon="23.9260000"></node>
+<node id="121004" version="1" lat="54.9004449" lon="23.9263354"></node>
+<node id="121005" version="1" lat="54.9007693" lon="23.9263844"></node>
+<node id="121006" version="1" lat="54.9007551" lon="23.9266646"></node>
+<node id="121007" version="1" lat="54.9004307" lon="23.9266156"></node>
+<node id="121008" version="1" lat="54.9004449" lon="23.9267354"></node>
+<node id="121009" version="1" lat="54.9007693" lon="23.9267844"></node>
+<node id="121010" version="1" lat="54.9007551" lon="23.9270646"></node>
+<node id="121011" version="1" lat="54.9004307" lon="23.9270156"></node>
+<node id="121012" version="1" lat="54.9004449" lon="23.9271354"></node>
+<node id="121013" version="1" lat="54.9007693" lon="23.9271844"></node>
+<node id="121014" version="1" lat="54.9007551" lon="23.9274646"></node>
+<node id="121015" version="1" lat="54.9004307" lon="23.9274156"></node>
+<node id="121016" version="1" lat="54.9012449" lon="23.9263354"></node>
+<node id="121017" version="1" lat="54.9015693" lon="23.9263844"></node>
+<node id="121018" version="1" lat="54.9015551" lon="23.9266646"></node>
+<node id="121019" version="1" lat="54.9012307" lon="23.9266156"></node>
+<node id="121020" version="1" lat="54.9012449" lon="23.9267354"></node>
+<node id="121021" version="1" lat="54.9015693" lon="23.9267844"></node>
+<node id="121022" version="1" lat="54.9015551" lon="23.9270646"></node>
+<node id="121023" version="1" lat="54.9012307" lon="23.9270156"></node>
+<node id="121024" version="1" lat="54.9098449" lon="23.9498354"></node>
+<node id="121025" version="1" lat="54.9101693" lon="23.9498844"></node>
+<node id="121026" version="1" lat="54.9101551" lon="23.9501646"></node>
+<node id="121027" version="1" lat="54.9098307" lon="23.9501156"></node>
+<way id="120" version="1"><nd ref="121000"/><nd ref="121001"/><nd ref="121002"/><nd ref="121003"/><nd ref="121000"/><tag k="leisure" v="sports_centre"/><tag k="name" v="Žalgirio teniso klubas"/><tag k="website" v="https://example.lt"/></way>
+<way id="120100" version="1"><nd ref="121004"/><nd ref="121005"/><nd ref="121006"/><nd ref="121007"/><nd ref="121004"/><tag k="leisure" v="pitch"/><tag k="sport" v="tennis"/><tag k="surface" v="clay"/><tag k="access" v="members"/><tag k="lit" v="yes"/></way>
+<way id="120101" version="1"><nd ref="121008"/><nd ref="121009"/><nd ref="121010"/><nd ref="121011"/><nd ref="121008"/><tag k="leisure" v="pitch"/><tag k="sport" v="tennis"/><tag k="surface" v="clay"/><tag k="access" v="members"/><tag k="lit" v="yes"/></way>
+<way id="120102" version="1"><nd ref="121012"/><nd ref="121013"/><nd ref="121014"/><nd ref="121015"/><nd ref="121012"/><tag k="leisure" v="pitch"/><tag k="sport" v="tennis"/><tag k="surface" v="clay"/><tag k="access" v="members"/><tag k="lit" v="yes"/></way>
+<way id="120103" version="1"><nd ref="121016"/><nd ref="121017"/><nd ref="121018"/><nd ref="121019"/><nd ref="121016"/><tag k="leisure" v="pitch"/><tag k="sport" v="tennis"/><tag k="surface" v="hard"/><tag k="access" v="members"/><tag k="lit" v="no"/></way>
+<way id="120104" version="1"><nd ref="121020"/><nd ref="121021"/><nd ref="121022"/><nd ref="121023"/><nd ref="121020"/><tag k="leisure" v="pitch"/><tag k="sport" v="tennis"/><tag k="surface" v="acrylic"/><tag k="access" v="members"/></way>
+<way id="120105" version="1"><nd ref="121024"/><nd ref="121025"/><nd ref="121026"/><nd ref="121027"/><nd ref="121024"/><tag k="leisure" v="pitch"/><tag k="sport" v="tennis"/><tag k="surface" v="clay"/><tag k="clay:type" v="Har-Tru"/><tag k="name" v="Green"/></way>
+</osm>

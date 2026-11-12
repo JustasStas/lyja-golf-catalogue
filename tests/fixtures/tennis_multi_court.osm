@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="lyja-fixtures">
+<node id="131000" version="1" lat="55.0002643" lon="23.9995666"></node>
+<node id="131001" version="1" lat="55.0000416" lon="24.0006262"></node>
+<node id="131002" version="1" lat="54.9997357" lon="24.0004334"></node>
+<node id="131003" version="1" lat="54.9999584" lon="23.9993738"></node>
+<way id="130100" version="1"><nd ref="131000"/><nd ref="131001"/><nd ref="131002"/><nd ref="131003"/><nd ref="131000"/><tag k="leisure" v="pitch"/><tag k="sport" v="tennis"/><tag k="name" v="Kortai"/><tag k="surface" v="hard"/></way>
+</osm>

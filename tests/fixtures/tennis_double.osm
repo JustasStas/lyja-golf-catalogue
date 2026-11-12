@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="lyja-fixtures">
+<node id="141000" version="1" lat="55.0998191" lon="24.0996075"></node>
+<node id="141001" version="1" lat="55.1001809" lon="24.0996075"></node>
+<node id="141002" version="1" lat="55.1001809" lon="24.1003925"></node>
+<node id="141003" version="1" lat="55.0998191" lon="24.1003925"></node>
+<node id="141004" version="1" lat="55.0998372" lon="24.0996587"></node>
+<node id="141005" version="1" lat="55.1001628" lon="24.0996587"></node>
+<node id="141006" version="1" lat="55.1001628" lon="24.0999413"></node>
+<node id="141007" version="1" lat="55.0998372" lon="24.0999413"></node>
+<node id="141008" version="1" lat="55.0998372" lon="24.1000587"></node>
+<node id="141009" version="1" lat="55.1001628" lon="24.1000587"></node>
+<node id="141010" version="1" lat="55.1001628" lon="24.1003413"></node>
+<node id="141011" version="1" lat="55.0998372" lon="24.1003413"></node>
+<way id="140100" version="1"><nd ref="141000"/><nd ref="141001"/><nd ref="141002"/><nd ref="141003"/><nd ref="141000"/><tag k="leisure" v="pitch"/><tag k="sport" v="tennis"/><tag k="name" v="Double"/></way>
+<way id="140101" version="1"><nd ref="141004"/><nd ref="141005"/><nd ref="141006"/><nd ref="141007"/><nd ref="141004"/><tag k="leisure" v="pitch"/><tag k="sport" v="tennis"/><tag k="name" v="Double"/></way>
+<way id="140102" version="1"><nd ref="141008"/><nd ref="141009"/><nd ref="141010"/><nd ref="141011"/><nd ref="141008"/><tag k="leisure" v="pitch"/><tag k="sport" v="tennis"/><tag k="name" v="Double"/></way>
+</osm>

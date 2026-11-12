@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://data.lyjaapp.eu/tennis/v1/schema/tennis-venue.schema.json",
+  "title": "Lyja tennis venue, v1",
+  "type": "object",
+  "required": ["id", "name", "name_generated", "country", "centroid", "courts_est", "surfaces", "lit", "covered_share", "access", "axis_deg", "axis_confidence", "osm_version_date", "attribution"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^[nwr][0-9]+$"},
+    "name": {"type": "string"},
+    "name_generated": {"type": "boolean"},
+    "name_base": {"type": ["string", "null"], "description": "The park or street a generated name is built from, for the app to localise."},
+    "country": {"type": "string", "pattern": "^[A-Z]{2}$"},
+    "centroid": {"type": "array", "items": {"type": "number"}, "minItems": 2, "maxItems": 2},
+    "courts_est": {"type": "integer", "minimum": 1},
+    "surfaces": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["hard", "red_clay", "green_clay", "artificial_grass", "grass", "porous_asphalt", "unknown"],
+      "patternProperties": {".*": {"type": "integer", "minimum": 0}}
+    },
+    "lit": {"enum": ["yes", "partial", "no", "unknown"]},
+    "covered_share": {"type": "number", "minimum": 0, "maximum": 1},
+    "access": {"enum": ["public", "customers", "unknown"]},
+    "axis_deg": {"type": ["number", "null"], "minimum": 0, "exclusiveMaximum": 180},
+    "axis_confidence": {"enum": ["high", "low", "none"]},
+    "website": {"type": ["string", "null"]},
+    "operator": {"type": ["string", "null"]},
+    "osm_version_date": {"type": "string"},
+    "attribution": {"type": "string"}
+  }
+}

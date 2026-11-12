@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="lyja-fixtures">
+<node id="171000" version="1" lat="55.4000000" lon="24.4000000"></node>
+<node id="171001" version="1" lat="55.4000000" lon="24.4100000"></node>
+<node id="171002" version="1" lat="55.4050000" lon="24.4100000"></node>
+<node id="171003" version="1" lat="55.4050000" lon="24.4000000"></node>
+<node id="171004" version="1" lat="55.4008372" lon="24.4008576"></node>
+<node id="171005" version="1" lat="55.4011628" lon="24.4008576"></node>
+<node id="171006" version="1" lat="55.4011628" lon="24.4011424"></node>
+<node id="171007" version="1" lat="55.4008372" lon="24.4011424"></node>
+<node id="171008" version="1" lat="55.4038372" lon="24.4088576"></node>
+<node id="171009" version="1" lat="55.4041628" lon="24.4088576"></node>
+<node id="171010" version="1" lat="55.4041628" lon="24.4091424"></node>
+<node id="171011" version="1" lat="55.4038372" lon="24.4091424"></node>
+<way id="170" version="1"><nd ref="171000"/><nd ref="171001"/><nd ref="171002"/><nd ref="171003"/><nd ref="171000"/><tag k="landuse" v="residential"/></way>
+<way id="170100" version="1"><nd ref="171004"/><nd ref="171005"/><nd ref="171006"/><nd ref="171007"/><nd ref="171004"/><tag k="leisure" v="pitch"/><tag k="sport" v="tennis"/><tag k="access" v="private"/></way>
+<way id="170101" version="1"><nd ref="171008"/><nd ref="171009"/><nd ref="171010"/><nd ref="171011"/><nd ref="171008"/><tag k="leisure" v="pitch"/><tag k="sport" v="tennis"/><tag k="name" v="Kiemo kortas"/></way>
+</osm>

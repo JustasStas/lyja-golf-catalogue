@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://data.lyjaapp.eu/tennis/v1/schema/tennis-manifest.schema.json",
+  "title": "Lyja tennis venue catalogue manifest, v1",
+  "type": "object",
+  "required": ["schema", "build_id", "generated_at", "base", "venue_path", "country_path", "countries", "counts", "files", "license", "attribution"],
+  "properties": {
+    "schema": {"const": 1},
+    "build_id": {"type": "string"},
+    "generated_at": {"type": "string"},
+    "osm_version_date": {"type": ["string", "null"]},
+    "base": {"type": "string", "pattern": "^builds/.+/$"},
+    "venue_path": {"const": "venues/{country}/{id}.json"},
+    "country_path": {"const": "countries/{country}.json.gz"},
+    "countries": {"type": "array", "items": {"type": "string", "pattern": "^[A-Z]{2}$"}},
+    "counts": {"type": "object", "required": ["totals", "countries"]},
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "sha256", "bytes"],
+        "properties": {"path": {"type": "string"}, "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "bytes": {"type": "integer"}}
+      }
+    },
+    "license": {"const": "ODbL-1.0"},
+    "attribution": {"type": "string"}
+  }
+}

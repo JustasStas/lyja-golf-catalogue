@@ -3,3 +3,6 @@ out/
 __pycache__/
 .pytest_cache/
 *.osm.pbf
+raw-tennis/
+out-tennis/
+boxes.geojson
