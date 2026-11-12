@@ -16,7 +16,9 @@
       "k": {"type": "integer", "minimum": 1},
       "s": {"enum": ["h", "rc", "gc", "ag", "g", "pa", "u"]},
       "l": {"enum": [0, 1, null]},
-      "a": {"enum": ["p", "c", "u"]}
+      "a": {"enum": ["p", "c", "u"]},
+      "g": {"const": 1, "description": "The name is generated; absent when it is OpenStreetMap's."},
+      "nb": {"type": "string", "description": "The park or street a generated name is built from."}
     }
   }
 }

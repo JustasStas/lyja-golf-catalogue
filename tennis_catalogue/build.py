@@ -574,7 +574,7 @@ def _index_entry(doc: dict) -> dict:
     if main is not None and known[main] < doc["surfaces"]["unknown"]:
         main = None
     lit = {"yes": 1, "partial": 1, "no": 0}.get(doc["lit"])
-    return {
+    entry = {
         "id": doc["id"],
         "n": doc["name"],
         "c": doc["country"],
@@ -585,6 +585,13 @@ def _index_entry(doc: dict) -> dict:
         "l": lit,
         "a": {"public": "p", "customers": "c"}.get(doc["access"], "u"),
     }
+    if doc["name_generated"]:
+        # The app writes generated names in the reader's language from the
+        # park or street: "Teniso kortai, Bernardinų sodas".
+        entry["g"] = 1
+        if doc.get("name_base"):
+            entry["nb"] = doc["name_base"]
+    return entry
 
 
 def build(raw_dir: Path, out_dir: Path, osm_date: str) -> dict:

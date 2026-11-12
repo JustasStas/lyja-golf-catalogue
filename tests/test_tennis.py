@@ -120,6 +120,8 @@ def test_a_street_between_courts_makes_two_venues(tmp_path):
     split = [v for v in venues.values() if v["courts_est"] == 1]
     assert all(v["name_generated"] and v["name"] == "Tennis courts, Testo gatvė" for v in split)
     assert all(v["name_base"] == "Testo gatvė" for v in split)
+    entries = [e for e in index(tmp_path / "out-tennis").values() if e.get("g")]
+    assert sorted(e.get("nb", "") for e in entries) == ["", "Testo gatvė", "Testo gatvė"]
 
 
 @pytest.mark.parametrize("name, axis", [("North south", 0), ("East west", 90), ("Diagonal", 45)])
