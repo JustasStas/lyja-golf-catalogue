@@ -87,8 +87,11 @@ def manifest(out_dir: Path, build_id: str, stats: dict) -> dict:
     }
 
 
-def _client():
+def _client(connections: int = 10):
+    """`connections` is the HTTP pool size: boto3 keeps 10 by default, so
+    more upload threads than that only wait for a connection."""
     import boto3  # imported here so the build and tests need no AWS SDK
+    from botocore.config import Config
 
     account = os.environ["CLOUDFLARE_ACCOUNT_ID"]
     return boto3.client(
@@ -97,6 +100,7 @@ def _client():
         aws_access_key_id=os.environ["R2_ACCESS_KEY_ID"],
         aws_secret_access_key=os.environ["R2_SECRET_ACCESS_KEY"],
         region_name="auto",
+        config=Config(max_pool_connections=connections, retries={"max_attempts": 10, "mode": "adaptive"}),
     )
 
 

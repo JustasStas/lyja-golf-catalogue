@@ -13,6 +13,7 @@ import concurrent.futures as futures
 import datetime as dt
 import json
 import os
+import time
 from pathlib import Path
 
 from golf_catalogue.publish import (
@@ -22,6 +23,10 @@ from golf_catalogue.publish import (
 PREFIX = "tennis/v1"
 LISTED = ("search-index.json.gz", "stats.json")
 UNPUBLISHED = ("build-log.json",)
+# Some 230,000 venue files: with boto3's default pool of 10 connections the
+# 2026-11-12 upload did not finish within the job's hour.
+UPLOAD_THREADS = 64
+PROGRESS_EVERY = 10_000
 
 LICENSE_TEXT = """Lyja tennis venue catalogue
 
@@ -69,19 +74,26 @@ def published_paths(out_dir: Path) -> list[Path]:
 
 
 def publish(out_dir: Path, build_id: str, tools: Path | None = None) -> dict:
-    s3 = _client()
+    s3 = _client(connections=UPLOAD_THREADS)
     bucket = os.environ["R2_BUCKET"]
     base = f"{PREFIX}/builds/{build_id}/"
     paths = published_paths(out_dir)
+    print(f"Uploading {len(paths)} files under {base}", flush=True)
 
     def put(path: Path) -> None:
+        # put_object: the venue files are small, so upload_file's transfer
+        # manager (its own threads, a HEAD per part) is only overhead.
         key = base + path.relative_to(out_dir).as_posix()
-        s3.upload_file(str(path), bucket, key, ExtraArgs={"ContentType": content_type(path.name), "CacheControl": DATA_CACHE})
+        s3.put_object(Bucket=bucket, Key=key, Body=path.read_bytes(),
+                      ContentType=content_type(path.name), CacheControl=DATA_CACHE)
 
-    with futures.ThreadPoolExecutor(max_workers=32) as pool:
-        for done in futures.as_completed([pool.submit(put, p) for p in paths]):
+    started = time.monotonic()
+    with futures.ThreadPoolExecutor(max_workers=UPLOAD_THREADS) as pool:
+        for n, done in enumerate(futures.as_completed([pool.submit(put, p) for p in paths]), 1):
             done.result()
-    print(f"Uploaded {len(paths)} files under {base}")
+            if n % PROGRESS_EVERY == 0:
+                print(f"  {n} of {len(paths)} in {time.monotonic() - started:.0f} s", flush=True)
+    print(f"Uploaded {len(paths)} files under {base} in {time.monotonic() - started:.0f} s", flush=True)
     if tools is not None:
         s3.upload_file(str(tools), bucket, "tennis/tools/tennis-catalogue.tar.gz",
                        ExtraArgs={"ContentType": "application/gzip", "CacheControl": DATA_CACHE})
