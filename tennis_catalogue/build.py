@@ -109,6 +109,7 @@ class Pitch:
     axis: float | None = None
     axis_high: bool = False
     seasonal: bool = False
+    inside: list[str] = field(default_factory=list)
 
     @property
     def name(self) -> str | None:
@@ -297,22 +298,14 @@ def build_sport(raws: list[dict], sport: str, osm_date: str, out_dir: Path | Non
         for b in raw["barriers"]:
             barriers_raw.setdefault(b["id"], b)
 
-    container_list = list(containers.values())
-    container_geoms = [shapely.from_wkt(c["wkt"]) for c in container_list]
-    container_tree = STRtree(container_geoms) if container_geoms else None
     barriers = [LineString([(lon, lat) for lat, lon in b["coords"]]) for b in barriers_raw.values()]
     barrier_names = [b.get("name") for b in barriers_raw.values()]
     barrier_kinds = [b["kind"] for b in barriers_raw.values()]
     barrier_tree = STRtree(barriers) if barriers else None
 
-    def around(point: Point) -> list[tuple[dict, object]]:
-        if container_tree is None:
-            return []
-        return [
-            (container_list[int(i)], container_geoms[int(i)])
-            for i in container_tree.query(point)
-            if container_geoms[int(i)].covers(point)
-        ]
+    def around(ids: list[str]) -> list[dict]:
+        """The containers a pitch is in, worked out per region by extract."""
+        return [containers[i] for i in ids if i in containers]
 
     # 1, 2: the sport's outdoor pitches.
     kept: list[Pitch] = []
@@ -334,17 +327,20 @@ def build_sport(raws: list[dict], sport: str, osm_date: str, out_dir: Path | Non
             stats[country]["disused_dropped"] += 1
             continue
         covered = tags.get("covered", "")
-        inside = around(centre)
+        inside = around(item.get("in", []))
         if (
             tags.get("indoor") == "yes"
             or covered == "yes"
             or ("building" in tags and tags.get("building") != "no")
-            or any(c["kind"] in INDOOR_CONTAINERS for c, _ in inside)
+            or any(c["kind"] in INDOOR_CONTAINERS for c in inside)
         ):
             dropped["indoor"] += 1
             stats[country]["indoor_dropped"] += 1
             continue
-        pitch = Pitch(id=pid, tags=tags, geom=geom, lat=lat, lon=lon, country=country, seasonal=covered == "seasonal")
+        pitch = Pitch(
+            id=pid, tags=tags, geom=geom, lat=lat, lon=lon, country=country, seasonal=covered == "seasonal",
+            inside=list(item.get("in", [])),
+        )
         if geom.geom_type != "Point":
             local = _local(geom, lat)
             pitch.perimeter_m = local.length
@@ -379,11 +375,11 @@ def build_sport(raws: list[dict], sport: str, osm_date: str, out_dir: Path | Non
     loose: list[Pitch] = []
     for p in kept:
         inside = [
-            (c, g) for c, g in around(Point(p.lon, p.lat))
+            c for c in around(p.inside)
             if c["kind"] in VENUE_CONTAINERS or (c["kind"] in NAMED_CONTAINERS and c.get("name"))
         ]
         if inside:
-            c, _ = min(inside, key=lambda cg: geo.geometry_area_ha(cg[1]))
+            c = min(inside, key=lambda c: c.get("area_ha", 0.0))
             venue = by_container.setdefault(c["id"], Venue(id=c["id"], country=p.country, container=c))
             venue.pitches.append(p)
         else:
@@ -479,7 +475,7 @@ def _is_backyard(venue: Venue, around) -> bool:
     pitch = venue.pitches[0]
     if pitch.name or (venue.name and not venue.name_generated):
         return False
-    residential = any(c["kind"] == "residential" for c, _ in around(Point(pitch.lon, pitch.lat)))
+    residential = any(c["kind"] == "residential" for c in around(pitch.inside))
     return pitch.tags.get("access") == "private" or residential
 
 
@@ -508,7 +504,7 @@ def _name(venue, point_list, point_geoms, point_tree, barriers, barrier_names, b
             venue.name = min(near, key=lambda dn: dn[0])[1]["tags"]["name"]
             return
     base = None
-    parks = [c for c, _ in around(centre) if c["kind"] in NAMED_CONTAINERS and c.get("name")]
+    parks = [c for p in venue.pitches for c in around(p.inside) if c["kind"] in NAMED_CONTAINERS and c.get("name")]
     if parks:
         base = parks[0]["name"]
     elif barrier_tree is not None:

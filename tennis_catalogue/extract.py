@@ -14,8 +14,8 @@ tests pass one small `.osm` file as both):
 Output is one gzipped JSON document per region:
 
     {"region": "lithuania", "country": "LT", "timestamp": "...",
-     "pitches":    [{"id": "w1", "tags": {...}, "wkt": "POLYGON(...)"} | {..., "point": [lat, lon]}],
-     "containers": [{"id": "w2", "kind": "sports_centre", "name": "...", "tags": {...}, "wkt": "..."}],
+     "pitches":    [{"id": "w1", "tags": {...}, "wkt": "POLYGON(...)", "in": ["w2"]} | {..., "point": [lat, lon]}],
+     "containers": [{"id": "w2", "kind": "sports_centre", "name": "...", "tags": {...}, "area_ha": 1.2}],
      "points":     [{"id": "n3", "tags": {...}, "point": [lat, lon]}],
      "barriers":   [{"id": "w4", "kind": "road", "name": "...", "coords": [[lat, lon], ...]}]}
 
@@ -32,7 +32,12 @@ import sys
 from pathlib import Path
 
 import osmium
+import shapely
 import shapely.wkb
+from shapely.geometry import LineString, Point
+from shapely.strtree import STRtree
+
+from golf_catalogue import geo
 
 RACKET_SPORTS = ("tennis", "padel", "pickleball")
 PITCH_TAG_PREFIXES = (
@@ -41,6 +46,9 @@ PITCH_TAG_PREFIXES = (
 )
 CONTAINER_TAG_PREFIXES = ("name", "leisure", "club", "landuse", "building", "sport", "operator", "website", "contact:website", "access")
 ROADS = {"primary", "secondary", "tertiary", "residential"}
+# Roads and water kept only this close to a racket-sport pitch: the build
+# needs them for the 40 m clustering and street names within 80 m.
+BARRIER_NEAR_M = 100.0
 WATERWAYS = {"river", "canal", "stream"}
 
 
@@ -127,16 +135,61 @@ def extract(paths: list[str | Path], region: str, country: str, timestamp: str |
     for path in paths:
         if path and Path(path).exists():
             _read(Path(path), out)
-    # A pitch that is also a container (a sports centre mapped as one area
-    # with leisure=pitch) stays a pitch only.
-    for oid in list(out["containers"]):
-        if oid in out["pitches"]:
-            del out["containers"][oid]
+    return reduce(out, region, country, timestamp)
+
+
+def reduce(out: dict, region: str, country: str, timestamp: str | None) -> dict:
+    """Keeps only what the build needs, so a country's buildings and
+    residential land never leave the region's job:
+
+    - racket-sport pitches only (other sports' pitches are not venues, and a
+      pitch around tennis pitches is tennis itself when it is double mapped);
+    - each pitch's containers worked out here (`in`: the ids of every area
+      covering its centre), and only those containers kept, without their
+      geometry but with their area for picking the smallest;
+    - roads and water within `BARRIER_NEAR_M` of a pitch.
+    """
+    pitches = {oid: p for oid, p in out["pitches"].items() if is_racket(p["tags"])}
+    containers = {oid: c for oid, c in out["containers"].items() if oid not in pitches}
+    container_ids = list(containers)
+    geoms = [shapely.from_wkt(containers[i]["wkt"]) for i in container_ids]
+    tree = STRtree(geoms) if geoms else None
+    used: set[str] = set()
+    pitch_shapes = []
+    for p in pitches.values():
+        geom = shapely.from_wkt(p["wkt"]) if "wkt" in p else Point(p["point"][1], p["point"][0])
+        pitch_shapes.append(geom)
+        centre = geom.representative_point() if geom.geom_type != "Point" else geom
+        inside = []
+        if tree is not None:
+            for i in tree.query(centre):
+                if geoms[int(i)].covers(centre):
+                    inside.append(container_ids[int(i)])
+        p["in"] = sorted(inside)
+        used.update(inside)
+    kept_containers = []
+    for oid in sorted(used):
+        c = containers[oid]
+        kept_containers.append({
+            "id": oid, "kind": c["kind"], "name": c["name"], "tags": c["tags"],
+            "area_ha": round(geo.geometry_area_ha(geoms[container_ids.index(oid)]), 4),
+        })
+    barriers = []
+    if pitch_shapes and out["barriers"]:
+        pitch_tree = STRtree(pitch_shapes)
+        for b in out["barriers"].values():
+            line = LineString([(lon, lat) for lat, lon in b["coords"]])
+            pad = geo.metres_to_degrees(BARRIER_NEAR_M, b["coords"][0][0])
+            if len(pitch_tree.query(line.buffer(pad))):
+                barriers.append(b)
     return {
         "region": region,
         "country": country,
         "timestamp": timestamp,
-        **{key: sorted(values.values(), key=lambda v: v["id"]) for key, values in out.items()},
+        "pitches": sorted(pitches.values(), key=lambda v: v["id"]),
+        "containers": kept_containers,
+        "points": sorted(out["points"].values(), key=lambda v: v["id"]),
+        "barriers": sorted(barriers, key=lambda v: v["id"]),
     }
 
 
