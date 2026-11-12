@@ -182,7 +182,8 @@ def test_guard():
     problems = guard.check(new, old)
     assert any(p.startswith("world") for p in problems) and any(p.startswith("LT") for p in problems)
     assert guard.check(new, None) == []
-    assert guard.check(new, None, index_bytes=7 * 1_048_576)
+    assert guard.check(new, None, index_bytes=9 * 1_048_576)
+    assert not guard.check(new, None, index_bytes=7 * 1_048_576)
 
 
 def test_boxes_cover_the_pitches_only():
