@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://data.lyjaapp.eu/tennis/v1/schema/tennis-stats.schema.json",
+  "title": "Lyja tennis venue catalogue stats, v1",
+  "type": "object",
+  "required": ["osm_version_date", "totals", "countries"],
+  "$defs": {
+    "row": {
+      "type": "object",
+      "required": ["raw_objects", "pitches_kept", "courts", "indoor_dropped", "disused_dropped", "practice_walls", "double_mapped_dropped", "backyard_hidden", "venues", "pct_with_surface", "pct_lit_known", "pct_access_known", "pct_axis_high", "pct_indoor_dropped", "seasonal_cover"],
+      "properties": {
+        "pct_with_surface": {"type": "number", "minimum": 0, "maximum": 100},
+        "pct_lit_known": {"type": "number", "minimum": 0, "maximum": 100},
+        "pct_access_known": {"type": "number", "minimum": 0, "maximum": 100},
+        "pct_axis_high": {"type": "number", "minimum": 0, "maximum": 100},
+        "pct_indoor_dropped": {"type": "number", "minimum": 0, "maximum": 100}
+      }
+    }
+  },
+  "properties": {
+    "osm_version_date": {"type": ["string", "null"]},
+    "totals": {"$ref": "#/$defs/row"},
+    "countries": {"type": "object", "patternProperties": {"^[A-Z]{2}$": {"$ref": "#/$defs/row"}}, "additionalProperties": false}
+  }
+}

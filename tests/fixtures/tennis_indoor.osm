@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="lyja-fixtures">
+<node id="151000" version="1" lat="55.2000000" lon="24.2000000"></node>
+<node id="151001" version="1" lat="55.2000000" lon="24.2010000"></node>
+<node id="151002" version="1" lat="55.2010000" lon="24.2010000"></node>
+<node id="151003" version="1" lat="55.2010000" lon="24.2000000"></node>
+<node id="151004" version="1" lat="55.2003372" lon="24.2003583"></node>
+<node id="151005" version="1" lat="55.2006628" lon="24.2003583"></node>
+<node id="151006" version="1" lat="55.2006628" lon="24.2006417"></node>
+<node id="151007" version="1" lat="55.2003372" lon="24.2006417"></node>
+<node id="151008" version="1" lat="55.2098372" lon="24.2098583"></node>
+<node id="151009" version="1" lat="55.2101628" lon="24.2098583"></node>
+<node id="151010" version="1" lat="55.2101628" lon="24.2101417"></node>
+<node id="151011" version="1" lat="55.2098372" lon="24.2101417"></node>
+<node id="151012" version="1" lat="55.2198372" lon="24.2198583"></node>
+<node id="151013" version="1" lat="55.2201628" lon="24.2198583"></node>
+<node id="151014" version="1" lat="55.2201628" lon="24.2201417"></node>
+<node id="151015" version="1" lat="55.2198372" lon="24.2201417"></node>
+<node id="151016" version="1" lat="55.2298372" lon="24.2298582"></node>
+<node id="151017" version="1" lat="55.2301628" lon="24.2298582"></node>
+<node id="151018" version="1" lat="55.2301628" lon="24.2301418"></node>
+<node id="151019" version="1" lat="55.2298372" lon="24.2301418"></node>
+<node id="151020" version="1" lat="55.2398372" lon="24.2398582"></node>
+<node id="151021" version="1" lat="55.2401628" lon="24.2398582"></node>
+<node id="151022" version="1" lat="55.2401628" lon="24.2401418"></node>
+<node id="151023" version="1" lat="55.2398372" lon="24.2401418"></node>
+<node id="151024" version="1" lat="55.2499096" lon="24.2499212"></node>
+<node id="151025" version="1" lat="55.2500904" lon="24.2499212"></node>
+<node id="151026" version="1" lat="55.2500904" lon="24.2500788"></node>
+<node id="151027" version="1" lat="55.2499096" lon="24.2500788"></node>
+<way id="150" version="1"><nd ref="151000"/><nd ref="151001"/><nd ref="151002"/><nd ref="151003"/><nd ref="151000"/><tag k="leisure" v="sports_hall"/><tag k="name" v="Hall"/></way>
+<way id="150100" version="1"><nd ref="151004"/><nd ref="151005"/><nd ref="151006"/><nd ref="151007"/><nd ref="151004"/><tag k="leisure" v="pitch"/><tag k="sport" v="tennis"/><tag k="name" v="Inside"/></way>
+<way id="150101" version="1"><nd ref="151008"/><nd ref="151009"/><nd ref="151010"/><nd ref="151011"/><nd ref="151008"/><tag k="leisure" v="pitch"/><tag k="sport" v="tennis"/><tag k="name" v="Indoor"/><tag k="indoor" v="yes"/></way>
+<way id="150102" version="1"><nd ref="151012"/><nd ref="151013"/><nd ref="151014"/><nd ref="151015"/><nd ref="151012"/><tag k="leisure" v="pitch"/><tag k="sport" v="tennis"/><tag k="name" v="Roofed"/><tag k="covered" v="yes"/></way>
+<way id="150103" version="1"><nd ref="151016"/><nd ref="151017"/><nd ref="151018"/><nd ref="151019"/><nd ref="151016"/><tag k="leisure" v="practice_pitch"/><tag k="sport" v="tennis"/><tag k="name" v="Wall"/></way>
+<way id="150104" version="1"><nd ref="151020"/><nd ref="151021"/><nd ref="151022"/><nd ref="151023"/><nd ref="151020"/><tag k="leisure" v="pitch"/><tag k="sport" v="tennis"/><tag k="name" v="Old"/><tag k="disused" v="yes"/></way>
+<way id="150105" version="1"><nd ref="151024"/><nd ref="151025"/><nd ref="151026"/><nd ref="151027"/><nd ref="151024"/><tag k="leisure" v="pitch"/><tag k="sport" v="padel"/><tag k="name" v="Padel"/></way>
+</osm>

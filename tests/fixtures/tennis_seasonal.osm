@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="lyja-fixtures">
+<node id="161000" version="1" lat="55.2998372" lon="24.2998580"></node>
+<node id="161001" version="1" lat="55.3001628" lon="24.2998580"></node>
+<node id="161002" version="1" lat="55.3001628" lon="24.3001420"></node>
+<node id="161003" version="1" lat="55.2998372" lon="24.3001420"></node>
+<way id="160100" version="1"><nd ref="161000"/><nd ref="161001"/><nd ref="161002"/><nd ref="161003"/><nd ref="161000"/><tag k="leisure" v="pitch"/><tag k="sport" v="tennis"/><tag k="name" v="Dome"/><tag k="covered" v="seasonal"/></way>
+</osm>

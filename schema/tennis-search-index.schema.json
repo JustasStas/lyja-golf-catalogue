@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://data.lyjaapp.eu/tennis/v1/schema/tennis-search-index.schema.json",
+  "title": "Lyja tennis venue search index, v1",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["id", "n", "c", "la", "lo", "k", "s", "l", "a"],
+    "properties": {
+      "id": {"type": "string", "pattern": "^[nwr][0-9]+$"},
+      "n": {"type": ["string", "null"]},
+      "c": {"type": "string", "pattern": "^[A-Z]{2}$"},
+      "la": {"type": "number", "minimum": -90, "maximum": 90},
+      "lo": {"type": "number", "minimum": -180, "maximum": 180},
+      "k": {"type": "integer", "minimum": 1},
+      "s": {"enum": ["h", "rc", "gc", "ag", "g", "pa", "u"]},
+      "l": {"enum": [0, 1, null]},
+      "a": {"enum": ["p", "c", "u"]},
+      "g": {"const": 1, "description": "The name is generated; absent when it is OpenStreetMap's."},
+      "nb": {"type": "string", "description": "The park or street a generated name is built from."}
+    }
+  }
+}

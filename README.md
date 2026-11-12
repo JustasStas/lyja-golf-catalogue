@@ -100,3 +100,68 @@ The layout rules follow the edge cases handled by
 (MIT); no code or output was copied from it.
 
 Course data © OpenStreetMap contributors, ODbL.
+
+## Tennis venues (`tennis_catalogue/`)
+
+The same monthly run builds Lyja's outdoor tennis venue catalogue, served at
+`https://data.lyjaapp.eu/tennis/v1/` (Lyja Pro Outdoor tennis; the app's
+`TennisVenue` and `TennisIndexEntry`). Golf's steps, files and schema are
+unchanged; each region is still downloaded once.
+
+Per region, after golf's filter:
+
+1. `osmium tags-filter … nwr/sport=tennis,padel,pickleball
+   nwr/leisure=pitch,practice_pitch,sports_centre,sports_hall,stadium nwr/club=sport`
+2. `tennis_catalogue.boxes`: the area 250 m around every racket-sport pitch.
+3. A second pass for the surroundings, kept only inside those areas
+   (`osmium extract -p boxes.geojson`): buildings, residential land, parks,
+   recreation grounds, main and residential roads, rivers and canals.
+4. `tennis_catalogue.extract` reduces both to a small JSON.
+
+Then one job (`tennis_catalogue.build`) applies the rules:
+
+- Courts are `leisure=pitch` with `sport=tennis` (in a `;` list too).
+- Dropped as indoor: `indoor=yes`, `covered=yes`, or a pitch inside a
+  building or `leisure=sports_hall`. `covered=seasonal` is kept and flagged
+  (`covered_share`). Dropped as disused: any `disused:*` or `abandoned:*`
+  key. Practice walls (`leisure=practice_pitch`) are counted, not listed.
+- A pitch drawn around smaller tennis pitches (double mapping) is dropped.
+- Venues: the smallest sports centre, `club=sport`, or named recreation
+  ground or park around the courts; otherwise courts within 40 m of each
+  other (edge to edge) that no main road, residential street or waterway
+  separates.
+- A single unnamed court tagged `access=private`, with no club or sports
+  centre around it, is a backyard court: counted, not listed. Residential
+  land alone does not hide a court: public courts in apartment-block yards
+  stay.
+- Names: the venue feature's, the commonest court name, a named tennis place
+  or club within 100 m, else generated ("Tennis courts, {park or street}",
+  `name_generated` and `name_base` for the app to localise).
+- Courts per pitch: `courts` / `pitch:count` / `count`, else one under 115 m
+  round, else area ÷ 650 m². Surfaces per court: clay is red unless
+  `clay:type` or `surface:colour` says green or Har-Tru; hard, acrylic,
+  asphalt and concrete are hard; grass; artificial turf; anything else
+  unknown.
+- Court direction: each pitch's minimum rotated rectangle in a local metric
+  frame. A single court's long side is high confidence; several courts side
+  by side run along the short side, low confidence. The venue's is the
+  court-weighted circular mean, `none` when its courts disagree by over 30°.
+- Lights: yes, partial, no or unknown over the courts; access: the commonest.
+
+The guard refuses a build that lost 20 % of a country's venues (of 20 or
+more) or 5 % of the world's, and a search index over 6 MB gzipped. Tennis
+publishes only when every region's tennis extract is in; padel and
+pickleball venues are grouped the same way and kept as a run artifact
+(`tennis-report`, `later/`) for later activities.
+
+```
+tennis/v1/manifest.json                          build id, counts, base, venue_path, file hashes
+tennis/v1/builds/{build}/search-index.json.gz    every outdoor venue: id, name, country, centroid, courts, surface, lights, access
+tennis/v1/builds/{build}/venues/{CC}/{id}.json   one venue
+tennis/v1/builds/{build}/countries/{CC}.json.gz  every venue of a country
+tennis/v1/builds/{build}/stats.json              per country: raw objects, pitches, indoor dropped, backyard hidden, venues, % with surface, lit, access, axis
+tennis/LICENSE.txt, tennis/tools/tennis-catalogue.tar.gz
+```
+
+Schemas: `schema/tennis-*.schema.json`. Fixtures:
+`python tests/fixtures/make_tennis_fixtures.py`.

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="lyja-fixtures">
+<node id="111000" version="1" lat="54.6830000" lon="25.2930000"></node>
+<node id="111001" version="1" lat="54.6830000" lon="25.2980000"></node>
+<node id="111002" version="1" lat="54.6860000" lon="25.2980000"></node>
+<node id="111003" version="1" lat="54.6860000" lon="25.2930000"></node>
+<node id="111004" version="1" lat="54.6846725" lon="25.2940996"></node>
+<node id="111005" version="1" lat="54.6843501" lon="25.2941774"></node>
+<node id="111006" version="1" lat="54.6843275" lon="25.2939004"></node>
+<node id="111007" version="1" lat="54.6846499" lon="25.2938226"></node>
+<node id="111008" version="1" lat="54.6846725" lon="25.2944996"></node>
+<node id="111009" version="1" lat="54.6843501" lon="25.2945774"></node>
+<node id="111010" version="1" lat="54.6843275" lon="25.2943004"></node>
+<node id="111011" version="1" lat="54.6846499" lon="25.2942226"></node>
+<node id="111012" version="1" lat="54.6846725" lon="25.2948996"></node>
+<node id="111013" version="1" lat="54.6843501" lon="25.2949774"></node>
+<node id="111014" version="1" lat="54.6843275" lon="25.2947004"></node>
+<node id="111015" version="1" lat="54.6846499" lon="25.2946226"></node>
+<node id="111016" version="1" lat="54.6846725" lon="25.2952996"></node>
+<node id="111017" version="1" lat="54.6843501" lon="25.2953774"></node>
+<node id="111018" version="1" lat="54.6843275" lon="25.2951004"></node>
+<node id="111019" version="1" lat="54.6846499" lon="25.2950226"></node>
+<node id="111020" version="1" lat="54.6846725" lon="25.2956996"></node>
+<node id="111021" version="1" lat="54.6843501" lon="25.2957774"></node>
+<node id="111022" version="1" lat="54.6843275" lon="25.2955004"></node>
+<node id="111023" version="1" lat="54.6846499" lon="25.2954226"></node>
+<node id="111024" version="1" lat="54.6846725" lon="25.2960996"></node>
+<node id="111025" version="1" lat="54.6843501" lon="25.2961774"></node>
+<node id="111026" version="1" lat="54.6843275" lon="25.2959004"></node>
+<node id="111027" version="1" lat="54.6846499" lon="25.2958226"></node>
+<way id="110" version="1"><nd ref="111000"/><nd ref="111001"/><nd ref="111002"/><nd ref="111003"/><nd ref="111000"/><tag k="leisure" v="park"/><tag k="name" v="Bernardinų sodas"/></way>
+<way id="110100" version="1"><nd ref="111004"/><nd ref="111005"/><nd ref="111006"/><nd ref="111007"/><nd ref="111004"/><tag k="leisure" v="pitch"/><tag k="sport" v="tennis"/><tag k="surface" v="hard"/><tag k="lit" v="yes"/><tag k="access" v="yes"/></way>
+<way id="110101" version="1"><nd ref="111008"/><nd ref="111009"/><nd ref="111010"/><nd ref="111011"/><nd ref="111008"/><tag k="leisure" v="pitch"/><tag k="sport" v="tennis"/><tag k="surface" v="hard"/><tag k="lit" v="yes"/><tag k="access" v="yes"/></way>
+<way id="110102" version="1"><nd ref="111012"/><nd ref="111013"/><nd ref="111014"/><nd ref="111015"/><nd ref="111012"/><tag k="leisure" v="pitch"/><tag k="sport" v="tennis"/><tag k="surface" v="hard"/><tag k="lit" v="yes"/><tag k="access" v="yes"/></way>
+<way id="110103" version="1"><nd ref="111016"/><nd ref="111017"/><nd ref="111018"/><nd ref="111019"/><nd ref="111016"/><tag k="leisure" v="pitch"/><tag k="sport" v="tennis"/><tag k="surface" v="hard"/><tag k="lit" v="yes"/><tag k="access" v="yes"/></way>
+<way id="110104" version="1"><nd ref="111020"/><nd ref="111021"/><nd ref="111022"/><nd ref="111023"/><nd ref="111020"/><tag k="leisure" v="pitch"/><tag k="sport" v="tennis"/><tag k="surface" v="hard"/><tag k="lit" v="yes"/><tag k="access" v="yes"/></way>
+<way id="110105" version="1"><nd ref="111024"/><nd ref="111025"/><nd ref="111026"/><nd ref="111027"/><nd ref="111024"/><tag k="leisure" v="pitch"/><tag k="sport" v="tennis"/><tag k="surface" v="hard"/><tag k="lit" v="yes"/><tag k="access" v="yes"/></way>
+</osm>

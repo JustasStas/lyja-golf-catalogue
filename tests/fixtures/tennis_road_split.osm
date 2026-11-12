@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="lyja-fixtures">
+<node id="181000" version="1" lat="55.4998372" lon="24.4998573"></node>
+<node id="181001" version="1" lat="55.5001628" lon="24.4998573"></node>
+<node id="181002" version="1" lat="55.5001628" lon="24.5001427"></node>
+<node id="181003" version="1" lat="55.4998372" lon="24.5001427"></node>
+<node id="181004" version="1" lat="55.4998372" lon="24.5006073"></node>
+<node id="181005" version="1" lat="55.5001628" lon="24.5006073"></node>
+<node id="181006" version="1" lat="55.5001628" lon="24.5008927"></node>
+<node id="181007" version="1" lat="55.4998372" lon="24.5008927"></node>
+<node id="181008" version="1" lat="55.4990000" lon="24.5003750"></node>
+<node id="181009" version="1" lat="55.5010000" lon="24.5003750"></node>
+<node id="181010" version="1" lat="55.5098372" lon="24.4998572"></node>
+<node id="181011" version="1" lat="55.5101628" lon="24.4998572"></node>
+<node id="181012" version="1" lat="55.5101628" lon="24.5001428"></node>
+<node id="181013" version="1" lat="55.5098372" lon="24.5001428"></node>
+<node id="181014" version="1" lat="55.5098372" lon="24.5006072"></node>
+<node id="181015" version="1" lat="55.5101628" lon="24.5006072"></node>
+<node id="181016" version="1" lat="55.5101628" lon="24.5008928"></node>
+<node id="181017" version="1" lat="55.5098372" lon="24.5008928"></node>
+<way id="180100" version="1"><nd ref="181000"/><nd ref="181001"/><nd ref="181002"/><nd ref="181003"/><nd ref="181000"/><tag k="leisure" v="pitch"/><tag k="sport" v="tennis"/></way>
+<way id="180101" version="1"><nd ref="181004"/><nd ref="181005"/><nd ref="181006"/><nd ref="181007"/><nd ref="181004"/><tag k="leisure" v="pitch"/><tag k="sport" v="tennis"/></way>
+<way id="180102" version="1"><nd ref="181008"/><nd ref="181009"/><tag k="highway" v="residential"/><tag k="name" v="Testo gatvė"/></way>
+<way id="180103" version="1"><nd ref="181010"/><nd ref="181011"/><nd ref="181012"/><nd ref="181013"/><nd ref="181010"/><tag k="leisure" v="pitch"/><tag k="sport" v="tennis"/></way>
+<way id="180104" version="1"><nd ref="181014"/><nd ref="181015"/><nd ref="181016"/><nd ref="181017"/><nd ref="181014"/><tag k="leisure" v="pitch"/><tag k="sport" v="tennis"/></way>
+</osm>
