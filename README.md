@@ -149,7 +149,7 @@ Then one job (`tennis_catalogue.build`) applies the rules:
 - Lights: yes, partial, no or unknown over the courts; access: the commonest.
 
 The guard refuses a build that lost 20 % of a country's venues (of 20 or
-more) or 5 % of the world's, and a search index over 6 MB gzipped. Tennis
+more) or 5 % of the world's, and a search index over 8 MB gzipped. Tennis
 publishes only when every region's tennis extract is in; padel and
 pickleball venues are grouped the same way and kept as a run artifact
 (`tennis-report`, `later/`) for later activities.

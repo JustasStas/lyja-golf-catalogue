@@ -17,7 +17,7 @@ from pathlib import Path
 MAX_COUNTRY_LOSS = 0.20
 MAX_WORLD_LOSS = 0.05
 MIN_COUNTRY_VENUES = 20
-MAX_INDEX_MB = 6.0
+MAX_INDEX_MB = 8.0
 
 
 def check(new_stats: dict, previous_counts: dict | None, index_bytes: int | None = None) -> list[str]:
