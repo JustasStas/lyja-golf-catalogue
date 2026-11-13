@@ -232,3 +232,31 @@ def test_resume_lists_every_page_of_existing_keys():
             return Pages()
 
     assert publish.existing_keys(S3(), "bucket", "p/") == {"a", "b", "c"}
+
+
+# MARK: Russia and Belarus (hard block, owner 2026-11-12)
+
+def test_no_russian_or_belarusian_region_is_planned():
+    from golf_catalogue import plan
+
+    assert not {r["country"] for r in plan.regions()} & {"RU", "BY"}
+
+
+@pytest.mark.parametrize("country", ["RU", "BY"])
+def test_tennis_build_drops_russia_and_belarus(tmp_path, country):
+    venues, out = run(tmp_path, "road_split", country=country)
+    assert venues == {}
+    stats = json.loads((out / "stats.json").read_text(encoding="utf-8"))
+    assert country not in stats["countries"]
+    assert not (out / "countries" / f"{country}.json.gz").exists()
+
+
+def test_guards_do_not_stop_dropping_russia_and_belarus():
+    from golf_catalogue import guard as golf_guard
+
+    new = {"totals": {"venues": 100}, "countries": {"LT": {"venues": 20}}}
+    old = {"totals": {"venues": 101}, "countries": {"LT": {"venues": 20}, "RU": {"venues": 50}, "BY": {"venues": 30}}}
+    assert guard.check(new, old) == []
+    new_golf = {"totals": {"courses": 100}, "countries": {"LT": {"courses": 20}}}
+    old_golf = {"totals": {"courses": 101}, "countries": {"LT": {"courses": 20}, "RU": {"courses": 28}}}
+    assert golf_guard.check(new_golf, old_golf) == []

@@ -8,7 +8,6 @@ regions:
   - {path: europe/andorra, country: AD}
   - {path: europe/austria, country: AT}
   - {path: europe/azores, country: PT}
-  - {path: europe/belarus, country: BY}
   - {path: europe/belgium, country: BE}
   - {path: europe/bosnia-herzegovina, country: BA}
   - {path: europe/bulgaria, country: BG}
@@ -55,7 +54,6 @@ regions:
   - {path: europe/united-kingdom/england, country: GB}
   - {path: europe/united-kingdom/scotland, country: GB}
   - {path: europe/united-kingdom/wales, country: GB}
-  - {path: russia, country: RU}
   - {path: africa/canary-islands, country: ES}
   # United States, per state
   - {path: north-america/us/alabama, country: US}

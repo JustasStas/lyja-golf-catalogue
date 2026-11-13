@@ -243,6 +243,16 @@ jobs:
         env:
           MATRIX: ${{ needs.plan.outputs.matrix }}
         run: |
+          # Only the planned regions count; an earlier run's extract of a
+          # region since dropped (Russia, Belarus) is deleted, not built.
+          python - <<'PY'
+          import json, os, pathlib
+          planned = {r["id"] for r in json.loads(os.environ["MATRIX"])["include"]}
+          for f in pathlib.Path("raw-tennis").glob("*.json.gz"):
+              if f.name.removesuffix(".json.gz") not in planned:
+                  print(f"Not building {f.name}: not a planned region")
+                  f.unlink()
+          PY
           expected=$(python -c "import json, os; print(len(json.loads(os.environ['MATRIX'])['include']))")
           got=$(ls raw-tennis/*.json.gz 2>/dev/null | wc -l)
           echo "Tennis extracts: $got of $expected regions"

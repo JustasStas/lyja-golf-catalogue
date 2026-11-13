@@ -24,6 +24,16 @@ NORTHERN_IRELAND = Polygon([
 # Jersey (JE) inside Geofabrik's "guernsey-jersey" (the rest is Guernsey, GG).
 JERSEY = Polygon([(-2.30, 49.15), (-1.95, 49.15), (-1.95, 49.30), (-2.30, 49.30), (-2.30, 49.15)])
 
+# Lyja does not support Russia or Belarus (owner, 2026-11-12): no region is
+# downloaded for them, and anything that resolves to either (a border
+# extract's edge) is dropped from both catalogues.
+EXCLUDED_COUNTRIES = frozenset({"RU", "BY"})
+
+
+def is_excluded_country(country: str) -> bool:
+    return country in EXCLUDED_COUNTRIES
+
+
 # region country → [(polygon, country inside it)]
 SPLITS: dict[str, list[tuple[Polygon, str]]] = {
     "IE": [(NORTHERN_IRELAND, "GB")],

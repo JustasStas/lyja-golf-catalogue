@@ -18,6 +18,8 @@ import json
 import sys
 from pathlib import Path
 
+from .countries import is_excluded_country
+
 MAX_COUNTRY_LOSS = 0.20
 MAX_WORLD_LOSS = 0.05
 MIN_COUNTRY_COURSES = 20
@@ -34,6 +36,8 @@ def check(new_stats: dict, previous_counts: dict | None) -> list[str]:
         problems.append(f"world: {old_world} → {new_world} courses ({(1 - new_world / old_world):.1%} fewer)")
     new_countries = new_stats["countries"]
     for country, old in sorted(previous_counts.get("countries", {}).items()):
+        if is_excluded_country(country):  # dropped on purpose (Russia, Belarus)
+            continue
         before = old.get("courses", 0)
         if before < MIN_COUNTRY_COURSES:
             continue
