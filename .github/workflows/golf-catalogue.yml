@@ -30,6 +30,10 @@ on:
         description: "Tennis only: the run ID whose tennis extracts to build and publish (kept 7 days). Skips the downloads and golf."
         required: false
         default: ""
+      tennis_build_id:
+        description: "Tennis only, with tennis_from_run: resume this interrupted build ID (e.g. 2026-11-12T1943Z) built from the same extracts; files already in R2 are skipped."
+        required: false
+        default: ""
 
 permissions:
   contents: read
@@ -270,6 +274,7 @@ jobs:
           R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
           R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
           R2_BUCKET: ${{ vars.R2_BUCKET || 'lyja-golf' }}
+          BUILD_ID: ${{ inputs.tennis_from_run != '' && inputs.tennis_build_id || '' }}
         run: |
           tar -czf ../tennis-catalogue.tar.gz --exclude='./raw' --exclude='./raw-tennis' --exclude='./out' --exclude='./out-tennis' --exclude='__pycache__' --exclude='./.git' .
-          python -m tennis_catalogue.publish out-tennis --tools ../tennis-catalogue.tar.gz
+          python -m tennis_catalogue.publish out-tennis --tools ../tennis-catalogue.tar.gz ${BUILD_ID:+--build-id "$BUILD_ID"}

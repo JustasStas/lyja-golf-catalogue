@@ -191,3 +191,44 @@ def test_boxes_cover_the_pitches_only():
     assert area is not None and area.covers(boxes.shapely.geometry.Point(24.5, 55.5))
     assert not area.covers(boxes.shapely.geometry.Point(24.6, 55.6))
     assert boxes.boxes(FIXTURES / "excluded.osm") is None
+
+
+def _client_error(code: str, status: int):
+    from botocore.exceptions import ClientError
+
+    return ClientError({"Error": {"Code": code, "Message": "x"}, "ResponseMetadata": {"HTTPStatusCode": status}}, "PutObject")
+
+
+def test_upload_retries_throttling_then_succeeds():
+    # 2026-11-12: one 503 "reduce your concurrent request rate" ended the upload.
+    calls, waits = [], []
+
+    def put():
+        calls.append(1)
+        if len(calls) < 3:
+            raise _client_error("ServiceUnavailable", 503)
+
+    publish.put_with_retry(put, sleep=waits.append)
+    assert len(calls) == 3 and len(waits) == 2
+
+
+def test_upload_gives_up_after_the_last_attempt_and_on_other_errors():
+    waits = []
+    with pytest.raises(Exception):
+        publish.put_with_retry(lambda: (_ for _ in ()).throw(_client_error("SlowDown", 429)), attempts=3, sleep=waits.append)
+    assert len(waits) == 2
+    with pytest.raises(Exception):
+        publish.put_with_retry(lambda: (_ for _ in ()).throw(_client_error("AccessDenied", 403)), sleep=waits.append)
+    assert len(waits) == 2
+
+
+def test_resume_lists_every_page_of_existing_keys():
+    class Pages:
+        def paginate(self, **_):
+            return [{"Contents": [{"Key": "a"}, {"Key": "b"}]}, {"Contents": [{"Key": "c"}]}, {}]
+
+    class S3:
+        def get_paginator(self, _):
+            return Pages()
+
+    assert publish.existing_keys(S3(), "bucket", "p/") == {"a", "b", "c"}

@@ -13,6 +13,7 @@ import concurrent.futures as futures
 import datetime as dt
 import json
 import os
+import random
 import time
 from pathlib import Path
 
@@ -23,10 +24,46 @@ from golf_catalogue.publish import (
 PREFIX = "tennis/v1"
 LISTED = ("search-index.json.gz", "stats.json")
 UNPUBLISHED = ("build-log.json",)
-# Some 230,000 venue files: with boto3's default pool of 10 connections the
-# 2026-11-12 upload did not finish within the job's hour.
-UPLOAD_THREADS = 64
+# Some 230,000 venue files. On 2026-11-12, 10 connections managed ~40 files/s
+# (too slow for the hour the job then had) and 64 ~80 files/s until R2 began
+# answering 5xx ("reduce your concurrent request rate"), which can lock the
+# whole bucket, golf's files included. 16 stays well below that.
+UPLOAD_THREADS = 16
 PROGRESS_EVERY = 10_000
+# A throttled or failed write is tried again after 2, 4, 8 ... 60 s.
+PUT_ATTEMPTS = 8
+RETRY_CODES = {"SlowDown", "ServiceUnavailable", "TooManyRequests", "InternalError", "RequestTimeout"}
+
+
+def _retryable(error: Exception) -> bool:
+    from botocore.exceptions import ClientError, ConnectionError as BotoConnectionError, ReadTimeoutError
+
+    if isinstance(error, (BotoConnectionError, ReadTimeoutError)):
+        return True
+    if isinstance(error, ClientError):
+        status = error.response.get("ResponseMetadata", {}).get("HTTPStatusCode", 0)
+        return error.response.get("Error", {}).get("Code") in RETRY_CODES or status == 429 or status >= 500
+    return False
+
+
+def put_with_retry(put, *, attempts: int = PUT_ATTEMPTS, sleep=time.sleep) -> None:
+    """Calls `put` until it succeeds, backing off on throttling and 5xx."""
+    for attempt in range(1, attempts + 1):
+        try:
+            put()
+            return
+        except Exception as error:  # noqa: BLE001 - re-raised unless retryable
+            if attempt == attempts or not _retryable(error):
+                raise
+            sleep(min(60.0, 2.0 ** attempt) * random.uniform(0.8, 1.2))
+
+
+def existing_keys(s3, bucket: str, prefix: str) -> set[str]:
+    """Keys already under `prefix`: a rerun of the same build skips them."""
+    keys: set[str] = set()
+    for page in s3.get_paginator("list_objects_v2").paginate(Bucket=bucket, Prefix=prefix):
+        keys.update(o["Key"] for o in page.get("Contents", []))
+    return keys
 
 LICENSE_TEXT = """Lyja tennis venue catalogue
 
@@ -78,14 +115,20 @@ def publish(out_dir: Path, build_id: str, tools: Path | None = None) -> dict:
     bucket = os.environ["R2_BUCKET"]
     base = f"{PREFIX}/builds/{build_id}/"
     paths = published_paths(out_dir)
-    print(f"Uploading {len(paths)} files under {base}", flush=True)
+    # Resuming the same build (same extracts, so the same files): skip what
+    # an earlier, interrupted upload already put there.
+    done_keys = existing_keys(s3, bucket, base)
+    total = len(paths)
+    paths = [p for p in paths if base + p.relative_to(out_dir).as_posix() not in done_keys]
+    print(f"Uploading {len(paths)} of {total} files under {base} ({total - len(paths)} already there)", flush=True)
 
     def put(path: Path) -> None:
         # put_object: the venue files are small, so upload_file's transfer
         # manager (its own threads, a HEAD per part) is only overhead.
         key = base + path.relative_to(out_dir).as_posix()
-        s3.put_object(Bucket=bucket, Key=key, Body=path.read_bytes(),
-                      ContentType=content_type(path.name), CacheControl=DATA_CACHE)
+        body = path.read_bytes()
+        put_with_retry(lambda: s3.put_object(Bucket=bucket, Key=key, Body=body,
+                                             ContentType=content_type(path.name), CacheControl=DATA_CACHE))
 
     started = time.monotonic()
     with futures.ThreadPoolExecutor(max_workers=UPLOAD_THREADS) as pool:
