@@ -21,7 +21,9 @@ import datetime as dt
 import hashlib
 import json
 import os
+import random
 import sys
+import time
 from pathlib import Path
 
 PREFIX = "golf/v1"
@@ -104,17 +106,61 @@ def _client(connections: int = 10):
     )
 
 
+# A throttled or failed write is tried again after 2, 4, 8 ... 60 s.
+PUT_ATTEMPTS = 8
+RETRY_CODES = {"SlowDown", "ServiceUnavailable", "TooManyRequests", "InternalError", "RequestTimeout"}
+
+
+def _retryable(error: Exception) -> bool:
+    from botocore.exceptions import ClientError, ConnectionError as BotoConnectionError, ReadTimeoutError
+
+    if isinstance(error, (BotoConnectionError, ReadTimeoutError)):
+        return True
+    if isinstance(error, ClientError):
+        status = error.response.get("ResponseMetadata", {}).get("HTTPStatusCode", 0)
+        return error.response.get("Error", {}).get("Code") in RETRY_CODES or status == 429 or status >= 500
+    return False
+
+
+def put_with_retry(put, *, attempts: int = PUT_ATTEMPTS, sleep=time.sleep) -> None:
+    """Calls `put` until it succeeds, backing off on throttling and 5xx."""
+    for attempt in range(1, attempts + 1):
+        try:
+            put()
+            return
+        except Exception as error:  # noqa: BLE001 - re-raised unless retryable
+            if attempt == attempts or not _retryable(error):
+                raise
+            sleep(min(60.0, 2.0 ** attempt) * random.uniform(0.8, 1.2))
+
+
+def existing_keys(s3, bucket: str, prefix: str) -> set[str]:
+    """Keys already under `prefix`: a rerun of the same build skips them."""
+    keys: set[str] = set()
+    for page in s3.get_paginator("list_objects_v2").paginate(Bucket=bucket, Prefix=prefix):
+        keys.update(o["Key"] for o in page.get("Contents", []))
+    return keys
+
+
+# Parallel writes. 32 shared the bucket with the tennis upload on
+# 2026-11-13 and R2 answered 503 ("reduce your concurrent request rate");
+# the tennis job now waits for this one, and every write retries.
+UPLOAD_THREADS = 16
+
+
 def publish(out_dir: Path, build_id: str, tools: Path | None = None) -> dict:
-    s3 = _client()
+    s3 = _client(connections=UPLOAD_THREADS)
     bucket = os.environ["R2_BUCKET"]
     base = f"{PREFIX}/builds/{build_id}/"
     paths = [p for p in sorted(out_dir.rglob("*")) if p.is_file() and p.name != "build-log.json"]
 
     def put(path: Path) -> None:
         key = base + path.relative_to(out_dir).as_posix()
-        s3.upload_file(str(path), bucket, key, ExtraArgs={"ContentType": content_type(path.name), "CacheControl": DATA_CACHE})
+        body = path.read_bytes()
+        put_with_retry(lambda: s3.put_object(Bucket=bucket, Key=key, Body=body,
+                                             ContentType=content_type(path.name), CacheControl=DATA_CACHE))
 
-    with futures.ThreadPoolExecutor(max_workers=32) as pool:
+    with futures.ThreadPoolExecutor(max_workers=UPLOAD_THREADS) as pool:
         for done in futures.as_completed([pool.submit(put, p) for p in paths]):
             done.result()  # re-raises: no manifest after a failed upload
     print(f"Uploaded {len(paths)} files under {base}")
