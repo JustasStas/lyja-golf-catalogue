@@ -13,12 +13,11 @@ import concurrent.futures as futures
 import datetime as dt
 import json
 import os
-import random
 import time
 from pathlib import Path
 
 from golf_catalogue.publish import (
-    DATA_CACHE, KEEP_OLD_BUILDS, MANIFEST_CACHE, _client, _cors, content_type, sha256,
+    DATA_CACHE, KEEP_OLD_BUILDS, MANIFEST_CACHE, _client, _cors, content_type, existing_keys, put_with_retry, sha256,
 )
 
 PREFIX = "tennis/v1"
@@ -30,41 +29,6 @@ UNPUBLISHED = ("build-log.json",)
 # whole bucket, golf's files included. 16 stays well below that.
 UPLOAD_THREADS = 16
 PROGRESS_EVERY = 10_000
-# A throttled or failed write is tried again after 2, 4, 8 ... 60 s.
-PUT_ATTEMPTS = 8
-RETRY_CODES = {"SlowDown", "ServiceUnavailable", "TooManyRequests", "InternalError", "RequestTimeout"}
-
-
-def _retryable(error: Exception) -> bool:
-    from botocore.exceptions import ClientError, ConnectionError as BotoConnectionError, ReadTimeoutError
-
-    if isinstance(error, (BotoConnectionError, ReadTimeoutError)):
-        return True
-    if isinstance(error, ClientError):
-        status = error.response.get("ResponseMetadata", {}).get("HTTPStatusCode", 0)
-        return error.response.get("Error", {}).get("Code") in RETRY_CODES or status == 429 or status >= 500
-    return False
-
-
-def put_with_retry(put, *, attempts: int = PUT_ATTEMPTS, sleep=time.sleep) -> None:
-    """Calls `put` until it succeeds, backing off on throttling and 5xx."""
-    for attempt in range(1, attempts + 1):
-        try:
-            put()
-            return
-        except Exception as error:  # noqa: BLE001 - re-raised unless retryable
-            if attempt == attempts or not _retryable(error):
-                raise
-            sleep(min(60.0, 2.0 ** attempt) * random.uniform(0.8, 1.2))
-
-
-def existing_keys(s3, bucket: str, prefix: str) -> set[str]:
-    """Keys already under `prefix`: a rerun of the same build skips them."""
-    keys: set[str] = set()
-    for page in s3.get_paginator("list_objects_v2").paginate(Bucket=bucket, Prefix=prefix):
-        keys.update(o["Key"] for o in page.get("Contents", []))
-    return keys
-
 LICENSE_TEXT = """Lyja tennis venue catalogue
 
 Venue data © OpenStreetMap contributors.

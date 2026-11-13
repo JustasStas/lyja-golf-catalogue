@@ -205,7 +205,9 @@ jobs:
           python -m golf_catalogue.publish out --tools ../golf-catalogue.tar.gz
 
   tennis:
-    needs: [plan, extract]
+    # After golf's job, whatever its outcome: two uploads at once overloaded
+    # R2 on 2026-11-13 and golf's failed.
+    needs: [plan, extract, build]
     # Runs after a full extract, or alone on an earlier run's extracts.
     if: ${{ !cancelled() && needs.plan.result == 'success' && (needs.extract.result == 'success' || inputs.tennis_from_run != '') }}
     runs-on: ubuntu-24.04
