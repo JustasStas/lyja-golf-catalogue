@@ -14,6 +14,8 @@ import json
 import sys
 from pathlib import Path
 
+from golf_catalogue.countries import is_excluded_country
+
 MAX_COUNTRY_LOSS = 0.20
 MAX_WORLD_LOSS = 0.05
 MIN_COUNTRY_VENUES = 20
@@ -31,6 +33,8 @@ def check(new_stats: dict, previous_counts: dict | None, index_bytes: int | None
     if old_world and new_world < old_world * (1 - MAX_WORLD_LOSS):
         problems.append(f"world: {old_world} → {new_world} venues ({(1 - new_world / old_world):.1%} fewer)")
     for country, old in sorted(previous_counts.get("countries", {}).items()):
+        if is_excluded_country(country):  # dropped on purpose (Russia, Belarus)
+            continue
         before = old.get("venues", 0)
         if before < MIN_COUNTRY_VENUES:
             continue

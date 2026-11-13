@@ -167,8 +167,11 @@ def _courses_from_raw(raws: list[dict]) -> dict[str, Course]:
                 geom = None
                 lat, lon = c["point"]
                 area = 0.0
+            country = countries.resolve(raw["country"], c["tags"], lat, lon)
+            if countries.is_excluded_country(country):
+                continue
             courses[c["id"]] = Course(
-                id=c["id"], tags=c["tags"], country=countries.resolve(raw["country"], c["tags"], lat, lon),
+                id=c["id"], tags=c["tags"], country=country,
                 geom=geom, point=(lat, lon), area_ha=area,
             )
     return courses

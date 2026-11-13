@@ -318,6 +318,8 @@ def build_sport(raws: list[dict], sport: str, osm_date: str, out_dir: Path | Non
         centre = geom.representative_point() if geom.geom_type != "Point" else geom
         lat, lon = centre.y, centre.x
         country = countries.resolve(region_country, tags, lat, lon)
+        if countries.is_excluded_country(country):
+            continue
         stats[country]["raw_objects"] += 1
         if tags.get("leisure") == "practice_pitch":
             stats[country]["practice_walls"] += 1

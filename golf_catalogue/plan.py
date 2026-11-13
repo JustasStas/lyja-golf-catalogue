@@ -12,6 +12,8 @@ from pathlib import Path
 
 import yaml
 
+from . import countries
+
 REGIONS = Path(__file__).resolve().parent.parent / "regions.yaml"
 GEOFABRIK = "https://download.geofabrik.de/"
 
@@ -26,6 +28,8 @@ def regions(only: str | None = None) -> list[dict]:
         # "FALSE"): every code must be a two-letter string.
         if not (isinstance(country, str) and re.fullmatch(r"[A-Z]{2}", country)):
             raise SystemExit(f"regions.yaml: {path}: country {country!r} is not a quoted ISO code")
+        if countries.is_excluded_country(country):
+            raise SystemExit(f"regions.yaml: {path}: {country} is excluded (no Russian or Belarusian data)")
         if only and not re.search(only, path):
             continue
         out.append({
