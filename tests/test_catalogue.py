@@ -277,3 +277,11 @@ def test_every_region_has_a_two_letter_country():
     countries = {r["country"] for r in regions()}
     assert "NO" in countries
     assert all(len(c) == 2 and c.isupper() for c in countries)
+
+
+def test_china_and_argentina_are_planned():
+    # Owner, 2026-11-14: both whole countries, for golf and tennis (one plan).
+    from golf_catalogue.plan import regions
+    by_country = {r["country"]: r["id"] for r in regions()}
+    assert by_country["CN"] == "asia-china"
+    assert by_country["AR"] == "south-america-argentina"
