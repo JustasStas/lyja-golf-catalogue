@@ -127,3 +127,5 @@ regions:
   - {path: australia-oceania/new-zealand, country: NZ}
   - {path: africa/south-africa, country: ZA}
   - {path: asia/japan, country: JP}
+  - {path: asia/china, country: CN}  # owner 2026-11-14
+  - {path: south-america/argentina, country: AR}  # owner 2026-11-14, whole country
