@@ -74,16 +74,30 @@ def published_paths(out_dir: Path) -> list[Path]:
     ]
 
 
+def to_upload(paths: list[Path], out_dir: Path, base: str, done_keys: set[str]) -> list[Path]:
+    """What a resumed upload of the same build still has to send: every
+    venue file not yet in R2, and every other file (the search index, stats,
+    countries) whatever is there. Those are the files the manifest checks or
+    that sum up the build, so they always come from this run: on 2026-11-13
+    a resume kept an interrupted attempt's search index, whose gzip header
+    differed, and the app refused it on its checksum."""
+    out = []
+    for path in paths:
+        relative = path.relative_to(out_dir).as_posix()
+        if relative.startswith("venues/") and base + relative in done_keys:
+            continue
+        out.append(path)
+    return out
+
+
 def publish(out_dir: Path, build_id: str, tools: Path | None = None) -> dict:
     s3 = _client(connections=UPLOAD_THREADS)
     bucket = os.environ["R2_BUCKET"]
     base = f"{PREFIX}/builds/{build_id}/"
     paths = published_paths(out_dir)
-    # Resuming the same build (same extracts, so the same files): skip what
-    # an earlier, interrupted upload already put there.
     done_keys = existing_keys(s3, bucket, base)
     total = len(paths)
-    paths = [p for p in paths if base + p.relative_to(out_dir).as_posix() not in done_keys]
+    paths = to_upload(paths, out_dir, base, done_keys)
     print(f"Uploading {len(paths)} of {total} files under {base} ({total - len(paths)} already there)", flush=True)
 
     def put(path: Path) -> None:

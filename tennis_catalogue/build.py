@@ -43,7 +43,7 @@ import shapely
 from shapely.geometry import LineString, Point
 from shapely.strtree import STRtree
 
-from golf_catalogue import countries, geo
+from golf_catalogue import countries, geo, gz
 
 from .extract import sports
 
@@ -426,11 +426,11 @@ def build_sport(raws: list[dict], sport: str, osm_date: str, out_dir: Path | Non
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(doc, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
 
-    with gzip.open(out_dir / "search-index.json.gz", "wt", encoding="utf-8") as f:
+    with gz.open_text(out_dir / "search-index.json.gz") as f:
         json.dump(index, f, ensure_ascii=False, separators=(",", ":"))
     (out_dir / "countries").mkdir(exist_ok=True)
     for country, items in by_country.items():
-        with gzip.open(out_dir / "countries" / f"{country}.json.gz", "wt", encoding="utf-8") as f:
+        with gz.open_text(out_dir / "countries" / f"{country}.json.gz") as f:
             json.dump(items, f, ensure_ascii=False, separators=(",", ":"))
 
     countries_out = {c: _country_stats(stats[c]) for c in sorted(stats)}
@@ -607,7 +607,7 @@ def build(raw_dir: Path, out_dir: Path, osm_date: str) -> dict:
     for sport in ("padel", "pickleball"):
         venues = build_sport(raws, sport, osm_date, None, publish=False)["venues"]
         kept_later[sport] = len(venues)
-        with gzip.open(later / f"{sport}.json.gz", "wt", encoding="utf-8") as f:
+        with gz.open_text(later / f"{sport}.json.gz") as f:
             json.dump(venues, f, ensure_ascii=False, separators=(",", ":"))
     log = {"regions": [r["region"] for r in raws], "dropped": result["dropped"], "later": kept_later}
     (out_dir / "build-log.json").write_text(json.dumps(log, ensure_ascii=False, indent=1), encoding="utf-8")

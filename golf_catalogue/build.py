@@ -33,7 +33,7 @@ import shapely.ops
 from shapely.geometry import LineString, Point
 from shapely.strtree import STRtree
 
-from . import countries, geo
+from . import countries, geo, gz
 
 MIN_COURSE_HA = 3.0
 NEAREST_COURSE_M = 300.0
@@ -452,11 +452,11 @@ def build(raw_dir: Path, out_dir: Path, osm_date: str) -> dict:
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
 
-    with gzip.open(out_dir / "search-index.json.gz", "wt", encoding="utf-8") as f:
+    with gz.open_text(out_dir / "search-index.json.gz") as f:
         json.dump(index, f, ensure_ascii=False, separators=(",", ":"))
     (out_dir / "countries").mkdir(exist_ok=True)
     for country, items in by_country.items():
-        with gzip.open(out_dir / "countries" / f"{country}.json.gz", "wt", encoding="utf-8") as f:
+        with gz.open_text(out_dir / "countries" / f"{country}.json.gz") as f:
             json.dump(items, f, ensure_ascii=False, separators=(",", ":"))
 
     totals = {k: sum(s[k] for s in stats.values()) for k in ("courses", "with_holes", "complete_9", "complete_18")}

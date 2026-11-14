@@ -260,3 +260,37 @@ def test_guards_do_not_stop_dropping_russia_and_belarus():
     new_golf = {"totals": {"courses": 100}, "countries": {"LT": {"courses": 20}}}
     old_golf = {"totals": {"courses": 101}, "countries": {"LT": {"courses": 20}, "RU": {"courses": 28}}}
     assert golf_guard.check(new_golf, old_golf) == []
+
+
+# MARK: A resumed upload (2026-11-13: the app refused the search index)
+
+def test_gzip_output_is_the_same_bytes_every_time(tmp_path):
+    import time
+    from golf_catalogue import gz
+
+    first, second = tmp_path / "a.json.gz", tmp_path / "b.json.gz"
+    with gz.open_text(first) as f:
+        f.write('[{"id": "w1"}]')
+    time.sleep(1.1)
+    with gz.open_text(second) as f:
+        f.write('[{"id": "w1"}]')
+    assert first.read_bytes() == second.read_bytes()
+    assert gzip.decompress(first.read_bytes()) == b'[{"id": "w1"}]'
+
+
+def test_tennis_build_is_byte_identical_twice(tmp_path):
+    (tmp_path / "a").mkdir()
+    (tmp_path / "b").mkdir()
+    _, out_a = run(tmp_path / "a", "road_split")
+    _, out_b = run(tmp_path / "b", "road_split")
+    assert (out_a / "search-index.json.gz").read_bytes() == (out_b / "search-index.json.gz").read_bytes()
+
+
+def test_resume_skips_only_venue_files_already_there(tmp_path):
+    out = tmp_path / "out"
+    names = ["search-index.json.gz", "stats.json", "countries/LT.json.gz", "venues/LT/w1.json", "venues/LT/w2.json"]
+    paths = [out / n for n in names]
+    base = "tennis/v1/builds/b/"
+    done = {base + n for n in names[:4]}
+    sent = [p.relative_to(out).as_posix() for p in publish.to_upload(paths, out, base, done)]
+    assert sent == ["search-index.json.gz", "stats.json", "countries/LT.json.gz", "venues/LT/w2.json"]
